@@ -1,6 +1,14 @@
 <?php
+
 namespace Inc\Conf;
+
+/**
+ *
+ * @type {{Written by Shahzaib 11 April,2019}}
+ */
+
 use PDO;
+
 class Conf
 {
 
@@ -8,7 +16,7 @@ class Conf
     {
         $serverName = "localhost";
         $username = "root";
-        $password = "alihassan342";
+        $password = "oc";
         $db = "StockItems";
         try {
             $conn = new PDO("mysql:host=$serverName;dbname=$db", $username, $password);

@@ -1,13 +1,26 @@
-.add-stock-item{
-    margin-left: 100px  ;
+/**
+ *
+ * @type {{Written by Shahzaib 12 April,2019}}
+ */
+
+.add-stock-item {
+    margin-left: 100px;
 }
+
 .modal-header {
     border-color: #337ab7;
     background-color: #337ab7;
 }
-.modal-title{
+
+.modal-title {
     color: white;
 }
-button.close{
+
+button.close {
     color: white;
+}
+
+#sel1 {
+    width: 100px;
+    display: inline-block;
 }

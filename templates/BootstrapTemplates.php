@@ -30,7 +30,7 @@
                         </div>
                         <div class="form-group">
                             <label for="tax">Tax</label>
-                            <input type="text" class="form-control" id="tax">
+                            <input type="number" class="form-control" id="tax">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -40,21 +40,23 @@
                         </div>
                         <div class="form-group">
                             <label for="bar-code">Bar Code</label>
-                            <input type="text" class="form-control" id="bar-code">
+                            <input type="number" class="form-control" id="bar-code">
                         </div>
                         <div class="form-group">
                             <label for="minimum-stock">Minimum Stock</label>
-                            <input type="text" class="form-control" id="minimum-stock">
+                            <input type="number" class="form-control" id="minimum-stock">
                         </div>
                         <div class="form-group">
                             <label for="lead-time">Lead Time</label>
-                            <input type="text" class="form-control" id="lead-time">
+                            <input type="number" class="form-control" id="lead-time">
                         </div>
                         <div class="form-group">
                             <label for="on-hand">On Hand</label>
-                            <input type="text" class="form-control" id="on-hand">
+                            <input type="number" class="form-control" id="on-hand">
                         </div>
-                        <button type="submit" class="btn btn-primary add-stock-item" onclick="stock.AddStockItem();">Submit</button>
+                        <button type="submit" class="btn btn-primary add-stock-item" onclick="stock.AddStockItem();">
+                            Submit
+                        </button>
                     </div>
                 </div
             </div>
@@ -100,7 +102,9 @@
                             <label for="Des">Des</label>
                             <input type="text" class="form-control" id="Des">
                         </div>
-                        <button type="submit" class="btn btn-primary add-stock-item" onclick="stock.EditStockItem();">Update</button>
+                        <button type="submit" class="btn btn-primary add-stock-item" onclick="stock.EditStockItem();">
+                            Update
+                        </button>
                     </div>
                 </div
             </div>
@@ -108,5 +112,19 @@
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
-
     </div>
+</div>
+</div>
+
+<div class="modal fade" id="message" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
