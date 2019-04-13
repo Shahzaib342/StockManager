@@ -1,0 +1,16 @@
+{
+    "name": "stock/manger",
+    "description": "Autoloader for Stock management system",
+    "authors": [
+        {
+            "name": "Shahzaib",
+            "email": "shahzaibalihassan@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Inc\\": "./Inc"
+        }
+    }
+}

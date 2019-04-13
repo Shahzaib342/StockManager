@@ -1,0 +1,13 @@
+.add-stock-item{
+    margin-left: 100px  ;
+}
+.modal-header {
+    border-color: #337ab7;
+    background-color: #337ab7;
+}
+.modal-title{
+    color: white;
+}
+button.close{
+    color: white;
+}
