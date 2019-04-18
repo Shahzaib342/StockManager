@@ -7,20 +7,20 @@
     margin-left: 100px;
 }
 
-.modal-header {
-    border-color: #337ab7;
-    background-color: #337ab7;
-}
-
-.modal-title {
-    color: white;
-}
-
-button.close {
-    color: white;
-}
-
 #sel1 {
     width: 100px;
     display: inline-block;
+}
+
+.btn-close {
+    background-color: #5e5e5e;
+    color: #f1f1f1;
+}
+
+#addStockItem .form-group label{
+    margin-top: 8px;
+}
+
+.auto-markup-selling-price {
+    float: right;
 }
