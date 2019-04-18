@@ -34,4 +34,52 @@
         </div>
     </div>
 </div>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading"></div>
+        <div class="panel-body">
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Cost Prices</div>
+                    <div class="panel-body">
+                        <table style="width:100%" class="cost-prices-table">
+                            <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>Supplier</th>
+                                <th>Price</th>
+                                <th>Last Purchase</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Selling Prices</div>
+                    <div class="panel-body">
+                        <table style="width:100%" class="selling-prices-table">
+                            <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>Pricelist</th>
+                                <th>Price</th>
+                                <th>Markup</th>
+                                <th>Rounding</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 

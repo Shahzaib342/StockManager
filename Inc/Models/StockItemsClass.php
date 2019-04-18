@@ -84,4 +84,21 @@ class StockItemsClass
             return $errors;
         }
     }
+
+    function getCostPrices()
+    {
+        $query = DB::connectMe()->query('SELECT sp.su_id,sp.su_desc,sb.sb_id,sb.sb_price,sb.sb_last_buy FROM 0_supplier_names sp INNER JOIN
+                                                  0_stock_buy sb on sp.su_id=sb.su_id');
+        $users = $row = $query->fetchAll();
+        return $users;
+    }
+
+    function getSellingPrices()
+    {
+        $query = DB::connectMe()->query('SELECT sp.sp_id,sp.sp_desc,ss.ss_id,ss.ss_price,ss.ss_markup,ss.ss_round FROM 0_list_prices sp INNER JOIN
+                                                  0_stock_sell ss on sp.sp_id=ss.sp_id');
+        $users = $row = $query->fetchAll();
+        return $users;
+    }
 }
+

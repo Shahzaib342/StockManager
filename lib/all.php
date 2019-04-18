@@ -18,6 +18,7 @@ array_push($actions, array('name' => 'getStockItems', 'action' => 'getStockItems
 array_push($actions, array('name' => 'addstockItem', 'action' => 'addstockItem'));
 array_push($actions, array('name' => 'editstockItem', 'action' => 'editstockItem'));
 array_push($actions, array('name' => 'getFilteredStock', 'action' => 'getFilteredStock'));
+array_push($actions, array('name' => 'getCostAndSellingPrices', 'action' => 'getCostAndSellingPrices'));
 
 // Go through the actions list and run the associated functions
 foreach ($actions as $act) {
@@ -76,5 +77,15 @@ function editstockItem()
     } else {
         $response['success'] = false;
     }
+    echo json_encode($response);
+}
+
+function getCostAndSellingPrices()
+{
+    $response = array('success' => false);
+    $CostPrices = StockItems::getCostPrices();
+    $response['CostPrices'] = $CostPrices;
+    $SellingPrices = StockItems::getSellingPrices();
+    $response['SellingPrices'] = $SellingPrices;
     echo json_encode($response);
 }

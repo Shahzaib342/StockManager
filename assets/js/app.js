@@ -16,6 +16,7 @@ $(document).ready(function () {
             "dataSrc": ""
         },
         "initComplete": function (settings, json) {
+            stock.getCostAndSellingPrices();
             $("table#stock_items tbody tr td:first-child").dblclick(function () {
                 var parent = $(this).parent();
                 $('#editStockItem').modal('show');
@@ -33,10 +34,12 @@ $(document).ready(function () {
             {"data": "si_desc"}
         ]
     });
+
 });
 
 
 stock.AddStockItem = function () {
+
     var data = [];
     $('#addStockItem input').each(function (key, value) {
         data.push({
@@ -61,9 +64,11 @@ stock.AddStockItem = function () {
             $('#message').modal('show');
         }
     });
+
 };
 
 stock.EditStockItem = function () {
+
     var data = [];
     $('#editStockItem input').each(function (key, value) {
         data.push({
@@ -88,10 +93,12 @@ stock.EditStockItem = function () {
             $('#message').modal('show');
         }
     });
+
 };
 
 
 stock.populateDatatable = function () {
+
     $('#stock_items').DataTable().destroy();
     $('#stock_items').DataTable({
         "ajax": {
@@ -124,6 +131,61 @@ stock.populateDatatable = function () {
             {"data": "gr_desc"},
             {"data": "si_desc"}
         ]
+    });
+
+};
+
+stock.getCostAndSellingPrices = function () {
+
+    $.ajax({
+        url: "lib/all.php?action=getCostAndSellingPrices",
+        type: "get",
+        dataType: "json",
+        success: function (response) {
+            stock.setCostPrices(response.CostPrices);
+            stock.setSellingPrices(response.SellingPrices);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+    });
+
+};
+
+stock.setCostPrices = function (CostPrices) {
+
+    $.each(CostPrices, function (index, value) {
+
+        var CostTable = $('.cost-prices-table');
+
+        var tr = '<tr>';
+        tr += '<td>' + value.sb_id + '</td>';
+        tr += '<td>' + value.su_desc + '</td>';
+        tr += '<td>' + value.sb_price + '</td>';
+        tr += '<td>' + value.sb_last_buy + '</td>';
+        tr += '</tr>';
+
+        CostTable.find('tbody').append(tr);
+    });
+
+};
+
+stock.setSellingPrices = function (SellingPrices) {
+
+    $.each(SellingPrices, function (index, value) {
+
+        var SellingTable = $('.selling-prices-table');
+
+        var tr = '<tr>';
+        tr += '<td>' + value.sp_id + '</td>';
+        tr += '<td>' + value.sp_desc + '</td>';
+        tr += '<td>' + value.ss_price + '</td>';
+        tr += '<td>' + value.ss_markup + '</td>';
+        tr += '<td>' + value.ss_round + '</td>';
+        tr += '</tr>';
+
+
+        SellingTable.find('tbody').append(tr);
     });
 
 };
