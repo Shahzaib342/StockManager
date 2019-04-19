@@ -189,3 +189,19 @@ stock.setSellingPrices = function (SellingPrices) {
     });
 
 };
+
+stock.getStockDetails = function() {
+
+    $.ajax({
+        url: "lib/all.php?action=getStockDetails",
+        type: "get",
+        dataType: "json",
+        success: function (response) {
+           console.log(response);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+    });
+
+};

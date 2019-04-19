@@ -100,5 +100,10 @@ class StockItemsClass
         $users = $row = $query->fetchAll();
         return $users;
     }
+
+    function getStockDetails()
+    {
+        return 'stock details';
+    }
 }
 
