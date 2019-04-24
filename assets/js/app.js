@@ -121,7 +121,7 @@ stock.AddStockItem = function () {
             });
         }
     });
-    console.log(data);
+
     $.ajax({
         url: "lib/all.php?action=addstockItem",
         type: "post",
@@ -235,7 +235,7 @@ stock.setCostPrices = function (CostPrices) {
         var CostTable = $('.cost-prices-table');
 
         var tr = '<tr>';
-        tr += '<td>' + value.sb_id + '</td>';
+        // tr += '<td>' + value.sb_id + '</td>';
         tr += '<td>' + value.su_desc + '</td>';
         tr += '<td>' + value.sb_price + '</td>';
         tr += '<td>' + value.sb_last_buy + '</td>';
@@ -253,7 +253,7 @@ stock.setSellingPrices = function (SellingPrices) {
         var SellingTable = $('.selling-prices-table');
 
         var tr = '<tr>';
-        tr += '<td>' + value.sp_id + '</td>';
+        // tr += '<td>' + value.sp_id + '</td>';
         tr += '<td>' + value.sp_desc + '</td>';
         tr += '<td>' + value.ss_price + '</td>';
         tr += '<td>' + value.ss_markup + '</td>';

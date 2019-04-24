@@ -37,7 +37,6 @@
                         <table style="width:100%" class="cost-prices-table">
                             <thead>
                             <tr>
-                                <th>id</th>
                                 <th>Supplier</th>
                                 <th>Price</th>
                                 <th>Last Purchase</th>
@@ -57,7 +56,6 @@
                         <table style="width:100%" class="selling-prices-table">
                             <thead>
                             <tr>
-                                <th>id</th>
                                 <th>Pricelist</th>
                                 <th>Price</th>
                                 <th>Markup</th>
