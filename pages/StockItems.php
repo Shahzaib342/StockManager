@@ -14,6 +14,7 @@
             <table id="stock_items" class="display" style="width:100%">
                 <thead>
                 <tr>
+                    <th>id</th>
                     <th>Code</th>
                     <th>Dept</th>
                     <th>Sub Dept</th>
@@ -21,15 +22,6 @@
                     <th>Desc</th>
                 </tr>
                 </thead>
-                <tfoot>
-                <tr>
-                    <th>Code</th>
-                    <th>Dept</th>
-                    <th>Sub Dept</th>
-                    <th>Group</th>
-                    <th>Desc</th>
-                </tr>
-                </tfoot>
             </table>
         </div>
     </div>

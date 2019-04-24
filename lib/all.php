@@ -32,14 +32,10 @@ foreach ($actions as $act) {
 
 function getStockItems()
 {
-    $response = array('success' => false);
     $result = StockItems::getStockItems();
     if ($result) {
-        $response['success'] = true;
-    } else {
-        $response['success'] = false;
+        echo json_encode($result);
     }
-    echo json_encode($result);
 }
 
 function getFilteredStock()
@@ -94,11 +90,20 @@ function getCostAndSellingPrices()
 function getStockDetails()
 {
     $response = array('success' => false);
-    $StockDetails = StockItems::getStockDetails();
+    $StockDetails = array(
+        '0_list_dept' => 'dp_code',
+        '0_list_subd' => 'sd_code',
+        '0_list_grup' => 'gr_code',
+        '0_list_taxes' => 'tx_id',
+        '0_supplier_names' => array('su_id', 'su_desc'),
+        '0_list_prices' => array('sp_id', 'sp_desc')
+    );
 
-    if($StockDetails) {
+    $StockDetailsModel = StockItems::getStockDetails($StockDetails);
+
+    if ($StockDetails) {
         $response['success'] = true;
-        $response['StockDetails'] = $StockDetails;
+        $response['StockDetails'] = $StockDetailsModel;
     }
 
     echo json_encode($response);

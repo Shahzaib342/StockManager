@@ -17,10 +17,18 @@
     color: #f1f1f1;
 }
 
-#addStockItem .form-group label{
+#addStockItem .form-group label, #editStockItem .form-group label{
     margin-top: 8px;
 }
 
 .auto-markup-selling-price {
     float: right;
+}
+
+#stock_items tbody td:first-child {
+    display: none;
+}
+
+#stock_items thead th:first-child {
+    display: none;
 }

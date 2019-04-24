@@ -14,7 +14,7 @@ class StockItemsClass
 
     function getStockItems()
     {
-        $query = DB::connectMe()->query('SELECT si.si_code,si.si_desc,ld.dp_desc,lg.gr_desc,ls.sd_desc FROM 0_stock_items si INNER JOIN
+        $query = DB::connectMe()->query('SELECT si.si_id,si.si_code,si.si_desc,ld.dp_desc,lg.gr_desc,ls.sd_desc FROM 0_stock_items si INNER JOIN
                                                   0_list_dept ld on si.dp_code=ld.dp_code INNER JOIN 0_list_grup lg on lg.gr_code=si.gr_code INNER JOIN 
                                                   0_list_subd ls on ls.sd_code=si.sd_code ');
         $users = $row = $query->fetchAll();
@@ -32,26 +32,71 @@ class StockItemsClass
 
     function addstockItem($data)
     {
-        $data = [
+        $db = DB::connectMe();
+
+        $StockItems = [
             'si_code' => $data[0]['value'],
             'si_desc' => $data[1]['value'],
-            'dp_code' => $data[2]['value'],
-            'sd_code' => $data[3]['value'],
-            'gr_code' => $data[4]['value'],
-            'tx_id' => $data[5]['value'],
-            'si_case_size' => $data[6]['value'],
-            'si_barcode' => $data[7]['value'],
-            'si_min_stock' => $data[8]['value'],
-            'si_lead_time' => $data[9]['value'],
-            'si_on_hand' => $data[10]['value'],
+            'si_case_size' => $data[2]['value'],
+            'si_cost_case' => $data[3]['value'],
+            'si_cost_unit' => $data[4]['value'],
+            'dp_code' => $data[11]['value'],
+            'sd_code' => $data[12]['value'],
+            'gr_code' => $data[13]['value'],
+            'tx_id' => $data[14]['value'],
+//            'su_desc' => $data[15]['value'],
+//            'sp_desc' => $data[14]['value'],
+
         ];
-        $sql = "INSERT INTO 0_stock_items (si_code, si_desc,dp_code,sd_code,gr_code,tx_id,si_case_size,si_barcode,si_min_stock,
-                si_lead_time,si_on_hand) VALUES (:si_code, :si_desc,:dp_code, :sd_code,:gr_code, :tx_id,:si_case_size, :si_barcode,
-                :si_min_stock, :si_lead_time,:si_on_hand)";
-        $stmt = DB::connectMe()->prepare($sql);
-        $stmt->execute($data);
+
+        $sql = "INSERT INTO 0_stock_items (si_code, si_desc,dp_code,sd_code,gr_code,tx_id,si_case_size,si_cost_case,
+              si_cost_unit) VALUES (:si_code, :si_desc,:dp_code, :sd_code,:gr_code, :tx_id,:si_case_size, :si_cost_case,
+                :si_cost_unit)";
+        $stmt = $db->prepare($sql);
+        $stmt->execute($StockItems);
+
         if ($stmt) {
-            return 'true';
+
+            $lastInserId = $db->lastInsertId();
+
+            $StockBuy = [
+                'sb_price' => $data[5]['value'],
+                'sb_last_buy' => $data[6]['value'],
+                'supplier_names_id' => $data[16]['value'],
+                'si_id' => $lastInserId
+            ];
+
+            $sql = "INSERT INTO 0_stock_buy (su_id,si_id, sb_price,sb_last_buy) VALUES
+                    (:supplier_names_id,:si_id, :sb_price,:sb_last_buy)";
+            $stmt = $db->prepare($sql);
+            $stmt->execute($StockBuy);
+
+            if ($stmt) {
+
+                $StockSell = [
+                    'selling_price_id' => $data[18]['value'],
+                    'ss_price' => $data[8]['value'],
+                    'ss_markup' => $data[9]['value'],
+                    'ss_round' => $data[10]['value'],
+                    'si_id' => $lastInserId
+                ];
+
+                $sql = "INSERT INTO 0_stock_sell (sp_id,si_id, ss_price,ss_markup,ss_round) VALUES
+                    (:selling_price_id,:si_id, :ss_price,:ss_markup,:ss_round)";
+                $stmt = $db->prepare($sql);
+                $stmt->execute($StockSell);
+
+                if ($stmt) {
+                    return 'true';
+
+                } else {
+                    return 'false';
+                }
+
+            } else {
+                return 'false';
+            }
+
         } else {
             return 'false';
         }
@@ -101,9 +146,24 @@ class StockItemsClass
         return $users;
     }
 
-    function getStockDetails()
+    function getStockDetails($StockDetails)
     {
-        return 'stock details';
+        $StockDetailsArray = array();
+        foreach ($StockDetails as $StockItem => $value) {
+            if (is_array($value)) {
+                foreach ($value as $index => $val) {
+                    $query = DB::connectMe()->query("SELECT $val from $StockItem");
+                    $rows = $row = $query->fetchAll();
+                    $StockDetailsArray[$val] = $rows;
+                }
+            } else {
+                $query = DB::connectMe()->query("SELECT $value from $StockItem");
+                $rows = $row = $query->fetchAll();
+                $StockDetailsArray[$value] = $rows;
+            }
+        }
+
+        return $StockDetailsArray;
     }
 }
 

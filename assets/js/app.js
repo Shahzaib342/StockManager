@@ -6,6 +6,59 @@ var stock = {};
 
 $(document).ready(function () {
 
+    var CostPerCase = $('#cost-per-case');
+    var CaseSize = $('#case-size');
+    var CostPerUnit = $('#cost-per-unit');
+    var MarkupCheckbox = $('.auto-markup');
+    var Markup = $('#markup');
+    var Price = $('#price');
+    var Rounding = $('#rounding');
+
+    CostPerCase.keyup(function () {
+        if (CaseSize.val().length > 0) {
+            var CostPerUnitValue = CostPerCase.val() / CaseSize.val();
+            CostPerUnit.val(CostPerUnitValue);
+            if (MarkupCheckbox.is(':checked')) {
+                stock.CalculateMarkup();
+            } else {
+                stock.CalculatePrice();
+            }
+        }
+    });
+
+
+    CaseSize.keyup(function () {
+        if (CostPerCase.val().length > 0) {
+            var CostPerUnitValue = CostPerCase.val() / CaseSize.val();
+            CostPerUnit.val(CostPerUnitValue);
+            if (MarkupCheckbox.is(':checked')) {
+                stock.CalculateMarkup();
+            } else {
+                stock.CalculatePrice();
+            }
+        }
+    });
+
+    Price.keyup(function () {
+        stock.CalculatePrice();
+    });
+
+
+    Markup.keyup(function () {
+        stock.CalculateMarkup();
+    });
+
+    MarkupCheckbox.click(function () {
+        if (!$(this).is(':checked')) {
+            Markup.prop('disabled', true);
+            Price.prop('disabled', false);
+        } else {
+            Markup.prop('disabled', false);
+            Price.prop('disabled', true);
+
+        }
+    });
+
     $("#sel1").change(function () {
         stock.populateDatatable();
     });
@@ -17,7 +70,7 @@ $(document).ready(function () {
         },
         "initComplete": function (settings, json) {
             stock.getCostAndSellingPrices();
-            $("table#stock_items tbody tr td:first-child").dblclick(function () {
+            $("table#stock_items tbody tr td:nth-child(2)").dblclick(function () {
                 var parent = $(this).parent();
                 $('#editStockItem').modal('show');
                 $($(parent).find('td')).each(function (key, value) {
@@ -27,6 +80,7 @@ $(document).ready(function () {
 
         },
         "columns": [
+            {"data": "si_id"},
             {"data": "si_code"},
             {"data": "dp_desc"},
             {"data": "sd_desc"},
@@ -47,6 +101,27 @@ stock.AddStockItem = function () {
             value: $($('#addStockItem input')[key]).val()
         });
     });
+    $('#addStockItem select').each(function (key, value) {
+        data.push({
+            name: $($('#addStockItem select')[key]).attr('id'),
+            value: $($('#addStockItem select option:selected')[key]).val()
+        });
+
+        if ($($('#addStockItem select')[key]).attr('id') == 'price-description') {
+            data.push({
+                name: 'selling_price_id',
+                value: ($("#price-description").prop('selectedIndex') + 1)
+            });
+        }
+
+        if ($($('#addStockItem select')[key]).attr('id') == 'supplier-names') {
+            data.push({
+                name: 'supplier_names_id',
+                value: ($("#supplier-names").prop('selectedIndex') + 1)
+            });
+        }
+    });
+    console.log(data);
     $.ajax({
         url: "lib/all.php?action=addstockItem",
         type: "post",
@@ -125,6 +200,7 @@ stock.populateDatatable = function () {
 
         },
         "columns": [
+            {"data": "si_id"},
             {"data": "si_code"},
             {"data": "dp_desc"},
             {"data": "sd_desc"},
@@ -190,18 +266,116 @@ stock.setSellingPrices = function (SellingPrices) {
 
 };
 
-stock.getStockDetails = function() {
+stock.getStockDetails = function () {
 
     $.ajax({
         url: "lib/all.php?action=getStockDetails",
         type: "get",
         dataType: "json",
         success: function (response) {
-           console.log(response);
+            stock.appendToAddModel(response.StockDetails);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR, textStatus, errorThrown);
         }
     });
 
+};
+
+stock.appendToAddModel = function (StockDetails) {
+    console.log(StockDetails);
+    $.each(StockDetails, function (index, value) {
+        switch (index) {
+            case 'dp_code':
+                stock.appendDepartmentDesc(value);
+                break;
+            case 'gr_code':
+                stock.appendGroupsDesc(value);
+                break;
+            case 'sd_code':
+                stock.appendSubDepartmentDesc(value);
+                break;
+            case 'sp_desc':
+                stock.appendPricesDesc(value);
+                break;
+            case 'su_desc':
+                stock.appendSupplierNames(value);
+                break;
+            case 'tx_id':
+                stock.appendTaxDesc(value);
+                break;
+        }
+    });
+};
+
+stock.appendDepartmentDesc = function (departments) {
+    $('#department').empty();
+    $.each(departments, function (index, value) {
+        $('#department').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+    })
+};
+
+stock.appendGroupsDesc = function (groups) {
+    $('#group').empty();
+    $.each(groups, function (index, value) {
+        $('#group').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+    })
+};
+
+stock.appendSubDepartmentDesc = function (Subdepartments) {
+    $('#sub_dept').empty();
+    $.each(Subdepartments, function (index, value) {
+        $('#sub_dept').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+    })
+};
+
+stock.appendPricesDesc = function (prices) {
+    $('#price-description').empty();
+    $.each(prices, function (index, value) {
+        $('#price-description').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+    })
+};
+
+stock.appendSupplierNames = function (supplierNames) {
+    $('#supplier-names').empty();
+    $.each(supplierNames, function (index, value) {
+        $('#supplier-names').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+    })
+};
+
+stock.appendTaxDesc = function (taxes) {
+    $('#tax').empty();
+    $.each(taxes, function (index, value) {
+        $('#tax').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+    })
+};
+
+stock.CalculateMarkup = function () {
+
+    var CostPerUnit = $('#cost-per-unit');
+    var Markup = $('#markup');
+    var Price = $('#price');
+    var Rounding = $('#rounding');
+
+    var TenPercentofCostPerUnit = (parseInt(Markup.val()) / 100) * parseInt(CostPerUnit.val());
+    var TotalPrice = TenPercentofCostPerUnit + parseInt(CostPerUnit.val());
+    Price.val(TotalPrice);
+
+    var parts = TotalPrice.toString().split('.');
+    Rounding.val('.' + parts[1]);
+};
+
+stock.CalculatePrice = function () {
+
+    var CostPerUnit = $('#cost-per-unit');
+    var Markup = $('#markup');
+    var Price = $('#price');
+    var Rounding = $('#rounding');
+
+    var TenPercent = parseInt(Price.val()) - parseInt(CostPerUnit.val());
+    var TenPercentofMarkup = (parseInt(TenPercent) / 100) * parseInt(CostPerUnit.val());
+    Markup.val(TenPercentofMarkup);
+
+    var parts = TenPercentofMarkup.toString().split('.');
+    Rounding.val('.' + parts[1]);
 };
