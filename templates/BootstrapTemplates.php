@@ -142,7 +142,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 stock-first-table">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="code">Code</label>
@@ -166,16 +166,10 @@
                                 <label for="case-size">Case Size</label>
                             </div>
                             <div class="form-group">
-                                <label for="bar-code">Bar Code</label>
+                                <label for="bar-code">Cost per Case</label>
                             </div>
                             <div class="form-group">
-                                <label for="minimum-stock">Minimum Stock</label>
-                            </div>
-                            <div class="form-group">
-                                <label for="lead-time">Lead Time</label>
-                            </div>
-                            <div class="form-group">
-                                <label for="on-hand">On Hand</label>
+                                <label for="minimum-stock">Cost per Unit</label>
                             </div>
                         </div>
                         <div class="col-md-9">
@@ -186,47 +180,51 @@
                                 <input type="text" class="form-control" id="desc">
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="department">
+                                <input class="form-control" id="department">
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="sub_dept">
+                                <input class="form-control" id="sub_dept">
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="group">
+                                <input class="form-control" id="group">
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control" id="tax">
+                                <input class="form-control" id="tax">
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control" id="case-size">
+                                <input type="number" class="form-control" id="case-size2">
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control" id="bar-code">
+                                <input type="number" class="form-control" id="cost-per-case2">
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control" id="minimum-stock">
-                            </div>
-                            <div class="form-group">
-                                <input type="number" class="form-control" id="lead-time">
-                            </div>
-                            <div class="form-group">
-                                <input type="number" class="form-control" id="on-hand">
+                                <input type="number" class="form-control" id="cost-per-unit2" disabled>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">Supplier Price
+                                <span onclick="stock.addNewRow();" class="add-row-in-supplier-tab">add</span>
                             </div>
                             <div class="panel-body">
-                                <table class="display" style="width:100%">
+                                <table class="display" id="supplier-price-table2" style="width:100%">
                                     <thead>
                                     <tr>
+                                        <th>id</th>
                                         <th>Supplier</th>
                                         <th>Price</th>
                                         <th>Last Bought</th>
                                     </tr>
                                     </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><input class="form-control supplier-id"></td>
+                                        <td><select class="form-control supplier-names"></select></td>
+                                        <td><input type="number" class="form-control supplier-price"></td>
+                                        <td><input type="date" class="form-control last-bought"></td>
+                                    </tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -237,15 +235,25 @@
                                 </span>
                             </div>
                             <div class="panel-body">
-                                <table class="display" style="width:100%">
+                                <table class="display" style="width:100%" id="selling-price-table2">
                                     <thead>
                                     <tr>
+                                        <th>id</th>
                                         <th>Description</th>
                                         <th>Price</th>
                                         <th>Markup</th>
                                         <th>Rounding</th>
                                     </tr>
                                     </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><input type="number" class="form-control price-id"></td>
+                                        <td><input type="text" class="form-control price-description"></td>
+                                        <td><input type="number" class="form-control price" ></td>
+                                        <td><input type="number" class="form-control markup"  disabled></td>
+                                        <td><input type="number" class="form-control rounding"  disabled></td>
+                                    </tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -259,19 +267,6 @@
                 </div>
             </div>
 
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="message" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <p></p>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">ok</button>
-                </div>
-            </div>
         </div>
     </div>
 </div>

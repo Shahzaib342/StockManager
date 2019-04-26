@@ -58,25 +58,25 @@ class StockItemsClass
         if ($stmt) {
 
             $lastInserId = $db->lastInsertId();
-             foreach($supplier_prices as $key=>$value) {
-                 $supplier = $value[0]['value'];
-                     $query = $db->query("SELECT su_id from 0_supplier_names where su_desc = '$supplier'");
-                     $rows = $row = $query->fetchAll();
-                 $StockBuy = [
-                     'sb_price' => $value[1]['value'],
-                     'sb_last_buy' => $value[2]['value'],
-                     'supplier_names_id' => $rows[0]['su_id'],
-                     'si_id' => $lastInserId
-                 ];
+            foreach($supplier_prices as $key=>$value) {
+                $supplier = $value[0]['value'];
+                $query = $db->query("SELECT su_id from 0_supplier_names where su_desc = '$supplier'");
+                $rows = $row = $query->fetchAll();
+                $StockBuy = [
+                    'sb_price' => $value[1]['value'],
+                    'sb_last_buy' => $value[2]['value'],
+                    'supplier_names_id' => $rows[0]['su_id'],
+                    'si_id' => $lastInserId
+                ];
 
-                 $sql = "INSERT INTO 0_stock_buy (su_id,si_id, sb_price,sb_last_buy) VALUES
+                $sql = "INSERT INTO 0_stock_buy (su_id,si_id, sb_price,sb_last_buy) VALUES
                     (:supplier_names_id,:si_id, :sb_price,:sb_last_buy)";
-                 $stmt = $db->prepare($sql);
-                 $stmt->execute($StockBuy);
-                 if(!$stmt) {
-                     return 'true';
-                 }
-             }
+                $stmt = $db->prepare($sql);
+                $stmt->execute($StockBuy);
+                if(!$stmt) {
+                    return 'true';
+                }
+            }
 
             if ($stmt) {
 
@@ -121,25 +121,69 @@ class StockItemsClass
 
     function editstockItem($data)
     {
-        $data = [
-            'si_code' => $data[0]['value'],
-            'dp_desc' => $data[1]['value'],
-            'sd_desc' => $data[2]['value'],
-            'gr_desc' => $data[3]['value'],
-            'si_desc' => $data[4]['value'],
+        $db = DB::connectMe();
+        $stock_details = $data[0];
+        $selling_price = $data[1];
+        $supplier_price = $data[2];
+
+        $da = [
+            'si_code' => $stock_details[0]['value'],
+            'dp_desc' => $stock_details[2]['value'],
+            'sd_desc' => $stock_details[3]['value'],
+            'gr_desc' => $stock_details[4]['value'],
+            'si_desc' => $stock_details[1]['value'],
+            'tx_id' => $stock_details[5]['value'],
+            'si_case_size' => $stock_details[6]['value'],
+            'si_cost_case' => $stock_details[7]['value'],
+            'si_cost_unit' => $stock_details[8]['value'],
+            'si_id' => $stock_details[9]['value']
         ];
-        $sql = "UPDATE 0_stock_items INNER JOIN 0_list_dept ON 0_list_dept.dp_code = 0_stock_items.dp_code
-                INNER JOIN 0_list_subd ON 0_stock_items.sd_code = 0_list_subd.sd_code
-                INNER JOIN 0_list_grup ON 0_stock_items.gr_code = 0_list_grup.gr_code
+        $sql = "UPDATE 0_stock_items 
                 SET 0_stock_items.si_desc = :si_desc,
-                0_list_dept.dp_desc = :dp_desc,
-                0_list_subd.sd_desc = :sd_desc,
-                0_list_grup.gr_desc = :gr_desc
-                WHERE 0_stock_items.si_code = :si_code";
-        $stmt = DB::connectMe()->prepare($sql);
-        $stmt->execute($data);
+                0_stock_items.si_code = :si_code,
+                0_stock_items.dp_code = :dp_desc,
+                0_stock_items.sd_code = :sd_desc,
+                0_stock_items.gr_code = :gr_desc,
+                 0_stock_items.tx_id = :tx_id,
+                0_stock_items.si_case_size = :si_case_size,
+                0_stock_items.si_cost_case = :si_cost_case,
+                0_stock_items.si_cost_unit = :si_cost_unit
+                WHERE 0_stock_items.si_id = :si_id";
+        $stmt = $db->prepare($sql);
+        $stmt->execute($da);
         if ($stmt->errorCode() == 0) {
-            return 'true';
+            foreach($supplier_price as $index=>$value) {
+                $sup = [
+                    'sb_price' => $value[2]['value'],
+                    'sb_last_buy' => $value[3]['value'],
+                    'sb_id' => $value[1]['value'],
+                ];
+                $sql = "UPDATE 0_stock_buy 
+                SET 0_stock_buy.sb_price = :sb_price,
+                0_stock_buy.sb_last_buy = :sb_last_buy
+                WHERE 0_stock_buy.sb_id = :sb_id";
+                $stmt = $db->prepare($sql);
+                $stmt->execute($sup);
+                if ($stmt->errorCode() == 0) {
+                }   }
+
+            foreach ($selling_price as $key => $val) {
+                $sell = [
+                    'ss_price' => $val[2]['value'],
+                    'ss_markup' => $val[3]['value'],
+                    'ss_round' => $val[4]['value'],
+                    'ss_id' => $val[0]['value']
+                ];
+                $sql = "UPDATE 0_stock_sell 
+                SET 0_stock_sell.ss_price = :ss_price,
+                0_stock_sell.ss_markup = :ss_markup,
+                    0_stock_sell.ss_round = :ss_round
+                WHERE 0_stock_sell.ss_id = :ss_id";
+                $stmt = $db->prepare($sql);
+                $stmt->execute($sell);
+                if ($stmt->errorCode() == 0) {
+
+                }    } return 'true';
         } else {
             $errors = $stmt->errorInfo();
             return $errors;
@@ -181,5 +225,22 @@ class StockItemsClass
 
         return $StockDetailsArray;
     }
+    function getDataforUpdation($data) {
+
+        $query = DB::connectMe()->query("SELECT sp.si_id,sp.si_desc,sp.si_code,sp.tx_id,sp.dp_code,sp.sd_code,sp.gr_code,sp.si_cost_case,sp.si_case_size,
+                                               sp.si_cost_unit,
+                                                sb.sb_id,sb.su_id,sb.sb_price,sb.sb_last_buy,
+                                                 ss.ss_id,ss.sp_id,ss.ss_price,ss.ss_markup,ss.ss_round,sup.su_desc,pri.sp_desc
+                                                 FROM 0_stock_items sp INNER JOIN
+                                                  0_stock_buy sb on sp.si_id=sb.si_id and sp.si_id = '$data'
+                                                   INNER JOIN 0_stock_sell ss on sp.si_id=ss.si_id and sp.si_id = '$data'
+                                                   INNER JOIN 0_supplier_names sup on sup.su_id=sb.su_id 
+                                                   INNER JOIN 0_list_prices pri on pri.sp_id=ss.sp_id");
+        $rows = $row = $query->fetchAll();
+        return $rows;
+
+    }
 }
+
+
 
