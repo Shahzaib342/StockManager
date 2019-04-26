@@ -33,20 +33,20 @@ class StockItemsClass
     function addstockItem($data)
     {
         $db = DB::connectMe();
+        $stock_details = $data[0];
+        $selling_prices = $data[1];
+        $supplier_prices = $data[2];
 
         $StockItems = [
-            'si_code' => $data[0]['value'],
-            'si_desc' => $data[1]['value'],
-            'si_case_size' => $data[2]['value'],
-            'si_cost_case' => $data[3]['value'],
-            'si_cost_unit' => $data[4]['value'],
-            'dp_code' => $data[11]['value'],
-            'sd_code' => $data[12]['value'],
-            'gr_code' => $data[13]['value'],
-            'tx_id' => $data[14]['value'],
-//            'su_desc' => $data[15]['value'],
-//            'sp_desc' => $data[14]['value'],
-
+            'si_code' => $stock_details[0]['value'],
+            'si_desc' => $stock_details[1]['value'],
+            'si_case_size' => $stock_details[2]['value'],
+            'si_cost_case' => $stock_details[3]['value'],
+            'si_cost_unit' => $stock_details[4]['value'],
+            'dp_code' => $stock_details[5]['value'],
+            'sd_code' => $stock_details[6]['value'],
+            'gr_code' => $stock_details[7]['value'],
+            'tx_id' => $stock_details[8]['value'],
         ];
 
         $sql = "INSERT INTO 0_stock_items (si_code, si_desc,dp_code,sd_code,gr_code,tx_id,si_case_size,si_cost_case,
@@ -58,43 +58,59 @@ class StockItemsClass
         if ($stmt) {
 
             $lastInserId = $db->lastInsertId();
+             foreach($supplier_prices as $key=>$value) {
+                 $supplier = $value[0]['value'];
+                     $query = $db->query("SELECT su_id from 0_supplier_names where su_desc = '$supplier'");
+                     $rows = $row = $query->fetchAll();
+                 $StockBuy = [
+                     'sb_price' => $value[1]['value'],
+                     'sb_last_buy' => $value[2]['value'],
+                     'supplier_names_id' => $rows[0]['su_id'],
+                     'si_id' => $lastInserId
+                 ];
 
-            $StockBuy = [
-                'sb_price' => $data[5]['value'],
-                'sb_last_buy' => $data[6]['value'],
-                'supplier_names_id' => $data[16]['value'],
-                'si_id' => $lastInserId
-            ];
-
-            $sql = "INSERT INTO 0_stock_buy (su_id,si_id, sb_price,sb_last_buy) VALUES
+                 $sql = "INSERT INTO 0_stock_buy (su_id,si_id, sb_price,sb_last_buy) VALUES
                     (:supplier_names_id,:si_id, :sb_price,:sb_last_buy)";
-            $stmt = $db->prepare($sql);
-            $stmt->execute($StockBuy);
+                 $stmt = $db->prepare($sql);
+                 $stmt->execute($StockBuy);
+                 if(!$stmt) {
+                     return 'true';
+                 }
+             }
 
             if ($stmt) {
 
-                $StockSell = [
-                    'selling_price_id' => $data[18]['value'],
-                    'ss_price' => $data[8]['value'],
-                    'ss_markup' => $data[9]['value'],
-                    'ss_round' => $data[10]['value'],
-                    'si_id' => $lastInserId
-                ];
+                foreach($selling_prices as $key=>$value) {
+                    $sellingPrice = $value[0]['value'];
+                    $query = $db->query("SELECT sp_id from 0_list_prices where sp_desc = '$sellingPrice'");
+                    $rows = $row = $query->fetchAll();
+                    $StockSell = [
+                        'selling_price_id' => $rows[0]['sp_id'],
+                        'ss_price' => $value[1]['value'],
+                        'ss_markup' => $value[2]['value'],
+                        'ss_round' => $value[3]['value'],
+                        'si_id' => $lastInserId
+                    ];
 
-                $sql = "INSERT INTO 0_stock_sell (sp_id,si_id, ss_price,ss_markup,ss_round) VALUES
+                    $sql = "INSERT INTO 0_stock_sell (sp_id,si_id, ss_price,ss_markup,ss_round) VALUES
                     (:selling_price_id,:si_id, :ss_price,:ss_markup,:ss_round)";
-                $stmt = $db->prepare($sql);
-                $stmt->execute($StockSell);
+                    $stmt = $db->prepare($sql);
+                    $stmt->execute($StockSell);
+                    if (!$stmt) {
+                        return 'true';
+                    }
+                }
+
 
                 if ($stmt) {
                     return 'true';
 
                 } else {
-                    return 'false';
+                    return 'true';
                 }
 
             } else {
-                return 'false';
+                return 'true';
             }
 
         } else {

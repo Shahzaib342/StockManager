@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 stock-first-table">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="code">Code</label>
@@ -70,9 +70,10 @@
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">Supplier Price
+                                <span onclick="stock.addNewRow();" class="add-row-in-supplier-tab">add</span>
                             </div>
                             <div class="panel-body">
-                                <table class="display" style="width:100%">
+                                <table class="display" id="supplier-price-table" style="width:100%">
                                     <thead>
                                     <tr>
                                         <th>Supplier</th>
@@ -82,9 +83,9 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td><select class="form-control" id="supplier-names"></select></td>
-                                        <td><input type="number" class="form-control" id="supplier-price"></td>
-                                        <td><input type="date" class="form-control" id="last-bought"></td>
+                                        <td><select class="form-control supplier-names"></select></td>
+                                        <td><input type="number" class="form-control supplier-price"></td>
+                                        <td><input type="date" class="form-control last-bought"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -97,7 +98,7 @@
                                 </span>
                             </div>
                             <div class="panel-body">
-                                <table class="display" style="width:100%">
+                                <table class="display" style="width:100%" id="selling-price-table">
                                     <thead>
                                     <tr>
                                         <th>Description</th>
@@ -108,10 +109,10 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td><select class="form-control" id="price-description"></select></td>
-                                        <td><input type="number" class="form-control" id="price"></td>
-                                        <td><input type="number" class="form-control" id="markup" disabled></td>
-                                        <td><input type="number" class="form-control" id="rounding" disabled></td>
+                                        <td><inpu type="text" class="form-control price-description"></td>
+                                        <td><input type="number" class="form-control price" ></td>
+                                        <td><input type="number" class="form-control markup"  disabled></td>
+                                        <td><input type="number" class="form-control rounding"  disabled></td>
                                     </tr>
                                     </tbody>
                                 </table>

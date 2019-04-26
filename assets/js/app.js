@@ -2,7 +2,11 @@
  *
  * @type {{Written by Shahzaib 13 April,2019}}
  */
-var stock = {};
+var stock = {
+    suuplierNames:'',
+    SupplierIds:'',
+    PricesIds:''
+};
 
 $(document).ready(function () {
 
@@ -10,18 +14,15 @@ $(document).ready(function () {
     var CaseSize = $('#case-size');
     var CostPerUnit = $('#cost-per-unit');
     var MarkupCheckbox = $('.auto-markup');
-    var Markup = $('#markup');
-    var Price = $('#price');
-    var Rounding = $('#rounding');
 
     CostPerCase.keyup(function () {
         if (CaseSize.val().length > 0) {
             var CostPerUnitValue = CostPerCase.val() / CaseSize.val();
             CostPerUnit.val(CostPerUnitValue);
             if (MarkupCheckbox.is(':checked')) {
-                stock.CalculateMarkup();
+               // stock.CalculateMarkup();
             } else {
-                stock.CalculatePrice();
+               // stock.CalculatePrice();
             }
         }
     });
@@ -32,29 +33,28 @@ $(document).ready(function () {
             var CostPerUnitValue = CostPerCase.val() / CaseSize.val();
             CostPerUnit.val(CostPerUnitValue);
             if (MarkupCheckbox.is(':checked')) {
-                stock.CalculateMarkup();
+                //stock.CalculateMarkup();
             } else {
-                stock.CalculatePrice();
+               // stock.CalculatePrice();
             }
         }
     });
 
-    Price.keyup(function () {
-        stock.CalculatePrice();
-    });
-
-
-    Markup.keyup(function () {
-        stock.CalculateMarkup();
-    });
-
     MarkupCheckbox.click(function () {
         if (!$(this).is(':checked')) {
-            Markup.prop('disabled', true);
-            Price.prop('disabled', false);
+            $('#selling-price-table tbody tr td:nth-child(3)').each(function (index, value) {
+                $(this).find('input').prop('disabled', true);
+            });
+            $('#selling-price-table tbody tr td:nth-child(2)').each(function (index, value) {
+                $(this).find('input').prop('disabled', false);
+            });
         } else {
-            Markup.prop('disabled', false);
-            Price.prop('disabled', true);
+            $('#selling-price-table tbody tr td:nth-child(3)').each(function (index, value) {
+                $(this).find('input').prop('disabled', false);
+            });
+            $('#selling-price-table tbody tr td:nth-child(2)').each(function (index, value) {
+                $(this).find('input').prop('disabled', true);
+            });
 
         }
     });
@@ -69,7 +69,7 @@ $(document).ready(function () {
             "dataSrc": ""
         },
         "initComplete": function (settings, json) {
-            stock.getCostAndSellingPrices();
+           // stock.getCostAndSellingPrices();
             $("table#stock_items tbody tr td:nth-child(2)").dblclick(function () {
                 var parent = $(this).parent();
                 $('#editStockItem').modal('show');
@@ -94,33 +94,59 @@ $(document).ready(function () {
 
 stock.AddStockItem = function () {
 
-    var data = [];
-    $('#addStockItem input').each(function (key, value) {
-        data.push({
-            name: $($('#addStockItem input')[key]).attr('id'),
-            value: $($('#addStockItem input')[key]).val()
+    var supplier_details = [];
+    var supplier_prices = [];
+    var selling_price = [];
+    $('#addStockItem .stock-first-table input').each(function (key, value) {
+        supplier_details.push({
+            name: $($('#addStockItem .stock-first-table input')[key]).attr('id'),
+            value: $(this).val()
         });
     });
-    $('#addStockItem select').each(function (key, value) {
-        data.push({
-            name: $($('#addStockItem select')[key]).attr('id'),
-            value: $($('#addStockItem select option:selected')[key]).val()
+    $('#addStockItem .stock-first-table select').each(function (key, value) {
+        supplier_details.push({
+            name: $($('#addStockItem .stock-first-table select')[key]).attr('id'),
+            value:  $($('#addStockItem select option:selected')[key]).val()
+        });
+    });
+
+    $('#supplier-price-table tbody tr').each(function(key,value) {
+
+        var supplier_prices_array = [];
+        supplier_prices_array.push({
+            name: 'supplier_name'+[key],
+            value: $(this).find('td option:selected').val()
+        });
+        supplier_prices_array.push({
+            name: 'price'+[key],
+            value: $(this).find('td:nth-child(2) input').val()
+        });
+        supplier_prices_array.push({
+            name: 'date-bought'+[key],
+            value: $(this).find('td:nth-child(3) input').val()
+        });
+        supplier_prices.push(supplier_prices_array);
+
+    });
+
+    $('#selling-price-table tbody tr').each(function(key,value) {
+        var selling_price_array = [];
+        $(this).find('input').each(function(key,value) {
+
+            var name = $(this).attr('class');
+            name = name.split(" ");
+            name = name[1];
+
+            selling_price_array.push({
+                name: name,
+                value: $(this).val()
+            });
         });
 
-        if ($($('#addStockItem select')[key]).attr('id') == 'price-description') {
-            data.push({
-                name: 'selling_price_id',
-                value: ($("#price-description").prop('selectedIndex') + 1)
-            });
-        }
-
-        if ($($('#addStockItem select')[key]).attr('id') == 'supplier-names') {
-            data.push({
-                name: 'supplier_names_id',
-                value: ($("#supplier-names").prop('selectedIndex') + 1)
-            });
-        }
+        selling_price.push(selling_price_array);
     });
+
+    var data = [supplier_details,selling_price,supplier_prices];
 
     $.ajax({
         url: "lib/all.php?action=addstockItem",
@@ -218,6 +244,7 @@ stock.getCostAndSellingPrices = function () {
         type: "get",
         dataType: "json",
         success: function (response) {
+            console.log(response);
             stock.setCostPrices(response.CostPrices);
             stock.setSellingPrices(response.SellingPrices);
         },
@@ -300,10 +327,16 @@ stock.appendToAddModel = function (StockDetails) {
                 break;
             case 'su_desc':
                 stock.appendSupplierNames(value);
+                stock.suuplierNames = value;
                 break;
             case 'tx_id':
                 stock.appendTaxDesc(value);
                 break;
+            case 'su_id':
+                stock.SupplierIds = value;
+                break;
+            case 'sp_id':
+                stock.PricesIds = value;
         }
     });
 };
@@ -330,16 +363,45 @@ stock.appendSubDepartmentDesc = function (Subdepartments) {
 };
 
 stock.appendPricesDesc = function (prices) {
-    $('#price-description').empty();
+
+    var SellingPriceTable = $('#selling-price-table');
+
+    SellingPriceTable.find('tbody').empty();
     $.each(prices, function (index, value) {
-        $('#price-description').append('<option value="' + value[0] + '">' + value[0] + '</option>');
-    })
+
+        var tr  = '<tr>';
+        tr += '<td><input type="text" class="form-control price-description'+ index+'" disabled value="' + value[0]  +'"></td>';
+        tr += '<td><input type="number" class="form-control price'+ index+'"></td>';
+        tr += '<td><input type="number" class="form-control markup'+index+'" disabled></td>';
+        tr += '<td><input type="number" class="form-control rounding'+index+'" disabled></td>';
+        tr += '</tr>';
+        $('.price'+ index).attr('onkeypress','stock.priceUpdated();');
+
+        $(document).on( 'keypress', '.price'+ index, function(){
+            var $this = $(this);
+            stock.CalculatePrice($this);
+        } );
+
+        $(document).on( 'keypress', '.markup'+ index, function(){
+            var $this = $(this);
+            stock.CalculateMarkup($this);
+        } );
+
+        SellingPriceTable.find('tbody').append(tr);
+    });
+
+};
+
+stock.priceUpdated =function() {
+    // console.log($(this).val());
+    var $this = $(this);
+    stock.CalculatePrice($this);
 };
 
 stock.appendSupplierNames = function (supplierNames) {
-    $('#supplier-names').empty();
+    $('.supplier-names').empty();
     $.each(supplierNames, function (index, value) {
-        $('#supplier-names').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+        $('.supplier-names').append('<option value="' + value[0] + '">' + value[0] + '</option>');
     })
 };
 
@@ -350,12 +412,12 @@ stock.appendTaxDesc = function (taxes) {
     })
 };
 
-stock.CalculateMarkup = function () {
+stock.CalculateMarkup = function (param) {
 
     var CostPerUnit = $('#cost-per-unit');
-    var Markup = $('#markup');
-    var Price = $('#price');
-    var Rounding = $('#rounding');
+    var Markup = param;
+    var Price = param.parent().parent().find('td:nth-child(2) input');
+    var Rounding = param.parent().parent().find('td:nth-child(4) input');
 
     var TenPercentofCostPerUnit = (parseInt(Markup.val()) / 100) * parseInt(CostPerUnit.val());
     var TotalPrice = TenPercentofCostPerUnit + parseInt(CostPerUnit.val());
@@ -365,12 +427,12 @@ stock.CalculateMarkup = function () {
     Rounding.val('.' + parts[1]);
 };
 
-stock.CalculatePrice = function () {
+stock.CalculatePrice = function (param) {
 
     var CostPerUnit = $('#cost-per-unit');
-    var Markup = $('#markup');
-    var Price = $('#price');
-    var Rounding = $('#rounding');
+    var Markup = param.parent().parent().find('td:nth-child(3) input');
+    var Price = param;
+    var Rounding = param.parent().parent().find('td:nth-child(4) input');
 
     var TenPercent = parseInt(Price.val()) - parseInt(CostPerUnit.val());
     var TenPercentofMarkup = (parseInt(TenPercent) / 100) * parseInt(CostPerUnit.val());
@@ -378,4 +440,24 @@ stock.CalculatePrice = function () {
 
     var parts = TenPercentofMarkup.toString().split('.');
     Rounding.val('.' + parts[1]);
+};
+
+stock.addNewRow = function() {
+
+    var supplier_table = $('#supplier-price-table');
+
+    var len = $('#supplier-price-table tbody tr').length;
+    var tr  = '<tr>';
+        tr += '<td><select class="form-control supplier-names'+ len+'"></select></td>';
+        tr += '<td><input type="number" class="form-control supplier-price'+ len+'"></td>';
+        tr += '<td><input type="date" class="form-control last-bought'+len+'"></td>';
+        tr += '</tr>';
+
+        supplier_table.find('tbody').append(tr);
+
+    $('.supplier-names'+ len).empty();
+    $.each(stock.suuplierNames, function (index, value) {
+        $('.supplier-names'+ len).append('<option value="' + value[0] + '">' + value[0] + '</option>');
+    })
+
 };
