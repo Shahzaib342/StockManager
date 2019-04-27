@@ -70,7 +70,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">Supplier Price
-                                <span onclick="stock.addNewRow();" class="add-row-in-supplier-tab">add</span>
+                                <span onclick="stock.addNewRow();" class="add-row-in-supplier-tab">+</span>
                             </div>
                             <div class="panel-body">
                                 <table class="display" id="supplier-price-table" style="width:100%">
@@ -205,7 +205,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">Supplier Price
-                                <span onclick="stock.addNewRow();" class="add-row-in-supplier-tab">add</span>
+<!--                                <span onclick="stock.addNewRow();" class="add-row-in-supplier-tab">add</span>-->
                             </div>
                             <div class="panel-body">
                                 <table class="display" id="supplier-price-table2" style="width:100%">
@@ -267,6 +267,39 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="message" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p></p>
+                <br>
+                <div>
+                    <ul>
+                        <li> Error maybe occur because you leave any field blank? </li>
+                        <li> You enter non unique si code or si desc? </li>
+                        <li> Date field empty? </li>
+                    </ul>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="message2" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>Item is added successfully</p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">ok</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

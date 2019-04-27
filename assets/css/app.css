@@ -32,3 +32,13 @@
 #stock_items thead th:first-child {
     display: none;
 }
+
+#supplier-price-table2 thead th:nth-child(1), #supplier-price-table2 tbody tr td:nth-child(1),
+#selling-price-table2 thead th:nth-child(1),#selling-price-table2  tbody tr td:nth-child(1) {
+    display: none;
+}
+
+.add-row-in-supplier-tab {
+    font-size: 22px;
+    float: right;
+}

@@ -57,10 +57,10 @@ function addstockItem()
     $response = array('success' => false);
     $data = $_POST['data'];
     $result = StockItems::addstockItem($data);
-    if ($result) {
-        $response['success'] = true;
-    } else {
+    if ($result == 'false') {
         $response['success'] = false;
+    } else {
+        $response['success'] = true;
     }
     echo json_encode($response);
 }
@@ -70,10 +70,10 @@ function editstockItem()
     $response = array('success' => false);
     $data = $_POST['data'];
     $result = StockItems::editstockItem($data);
-    if ($result) {
-        $response['success'] = true;
-    } else {
+    if ($result == 'false') {
         $response['success'] = false;
+    } else {
+        $response['success'] = true;
     }
     echo json_encode($response);
 }
@@ -81,10 +81,10 @@ function editstockItem()
 function getCostAndSellingPrices()
 {
     $response = array('success' => false);
-    $CostPrices = StockItems::getCostPrices();
-    $response['CostPrices'] = $CostPrices;
-    $SellingPrices = StockItems::getSellingPrices();
-    $response['SellingPrices'] = $SellingPrices;
+    $SupplierNames = StockItems::getSupplierNames();
+    $response['SupplierNames'] = $SupplierNames;
+//    $SellingPrices = StockItems::getSellingPrices();
+//    $response['SellingPrices'] = $SellingPrices;
     echo json_encode($response);
 }
 

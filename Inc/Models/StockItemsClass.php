@@ -58,6 +58,7 @@ class StockItemsClass
         if ($stmt) {
 
             $lastInserId = $db->lastInsertId();
+            $lastInserId2 = array();
             foreach($supplier_prices as $key=>$value) {
                 $supplier = $value[0]['value'];
                 $query = $db->query("SELECT su_id from 0_supplier_names where su_desc = '$supplier'");
@@ -69,16 +70,60 @@ class StockItemsClass
                     'si_id' => $lastInserId
                 ];
 
+                if(  $value[1]['value'] == '' || $value[2]['value'] == '' ) {
+
+                    $sql = "DELETE FROM `0_stock_items` WHERE `si_id` = :id";
+                    $statement = $db->prepare($sql);
+                    $makeToDelete = $data;
+                    $statement->bindValue(':id', $lastInserId);
+                    $delete = $statement->execute();
+
+                    if(count($lastInserId2) > 0) {
+
+                        foreach ($lastInserId2 as $key=> $value) {
+                            $sql = "DELETE FROM `0_stock_buy` WHERE `sb_id` = :id";
+                            $statement = $db->prepare($sql);
+                            $makeToDelete = $data;
+                            $statement->bindValue(':id', $lastInserId2[$key]);
+                            $delete = $statement->execute();
+                        }
+                    }
+
+                    return 'false';
+                }
+
                 $sql = "INSERT INTO 0_stock_buy (su_id,si_id, sb_price,sb_last_buy) VALUES
                     (:supplier_names_id,:si_id, :sb_price,:sb_last_buy)";
                 $stmt = $db->prepare($sql);
                 $stmt->execute($StockBuy);
                 if(!$stmt) {
-                    return 'true';
+
+                    $sql = "DELETE FROM `0_stock_items` WHERE `si_id` = :id";
+                    $statement = $db->prepare($sql);
+                    $makeToDelete = $data;
+                    $statement->bindValue(':id', $lastInserId);
+                    $delete = $statement->execute();
+
+                    if(count($lastInserId2) > 0) {
+
+                        foreach ($lastInserId2 as $key=> $value) {
+                            $sql = "DELETE FROM `0_stock_buy` WHERE `sb_id` = :id";
+                            $statement = $db->prepare($sql);
+                            $makeToDelete = $data;
+                            $statement->bindValue(':id', $lastInserId2[$key]);
+                            $delete = $statement->execute();
+                        }
+                    }
+
+                    return 'false';
+                }
+                else {
+                    array_push($lastInserId2,$db->lastInsertId());
                 }
             }
 
             if ($stmt) {
+                $lastInserId3 = array();
 
                 foreach($selling_prices as $key=>$value) {
                     $sellingPrice = $value[0]['value'];
@@ -92,12 +137,79 @@ class StockItemsClass
                         'si_id' => $lastInserId
                     ];
 
+                    if ( $value[1]['value'] == '' ) {
+
+                        $sql = "DELETE FROM `0_stock_items` WHERE `si_id` = :id";
+                        $statement = $db->prepare($sql);
+                        $makeToDelete = $data;
+                        $statement->bindValue(':id', $lastInserId);
+                        $delete = $statement->execute();
+
+                            foreach ($lastInserId2 as $key=> $value) {
+                                $sql = "DELETE FROM `0_stock_buy` WHERE `sb_id` = :id";
+                                $statement = $db->prepare($sql);
+                                $makeToDelete = $data;
+                                $statement->bindValue(':id', $lastInserId2[$key]);
+                                $delete = $statement->execute();
+                            }
+
+                        if(count($lastInserId3) > 0) {
+
+                            foreach ($lastInserId3 as $key=> $value) {
+                                $sql = "DELETE FROM `0_stock_sell` WHERE `ss_id` = :id";
+                                $statement = $db->prepare($sql);
+                                $makeToDelete = $data;
+                                $statement->bindValue(':id', $lastInserId3[$key]);
+                                $delete = $statement->execute();
+                            }
+                        }
+
+                        return 'false';
+                    }
+                    else {
+
+                        if($value[2]['value'] == '') {
+                            $StockSell['ss_markup'] = 0;
+                        }
+                        if($value[3]['value'] == '') {
+                            $StockSell['ss_round'] = 0;
+                        }
+                    }
+
                     $sql = "INSERT INTO 0_stock_sell (sp_id,si_id, ss_price,ss_markup,ss_round) VALUES
                     (:selling_price_id,:si_id, :ss_price,:ss_markup,:ss_round)";
                     $stmt = $db->prepare($sql);
                     $stmt->execute($StockSell);
                     if (!$stmt) {
-                        return 'true';
+                        $sql = "DELETE FROM `0_stock_items` WHERE `si_id` = :id";
+                        $statement = $db->prepare($sql);
+                        $makeToDelete = $data;
+                        $statement->bindValue(':id', $lastInserId);
+                        $delete = $statement->execute();
+
+                        foreach ($lastInserId2 as $key=> $value) {
+                            $sql = "DELETE FROM `0_stock_buy` WHERE `sb_id` = :id";
+                            $statement = $db->prepare($sql);
+                            $makeToDelete = $data;
+                            $statement->bindValue(':id', $lastInserId2[$key]);
+                            $delete = $statement->execute();
+                        }
+
+                        if(count($lastInserId3) > 0) {
+
+                            foreach ($lastInserId3 as $key=> $value) {
+                                $sql = "DELETE FROM `0_stock_sell` WHERE `ss_id` = :id";
+                                $statement = $db->prepare($sql);
+                                $makeToDelete = $data;
+                                $statement->bindValue(':id', $lastInserId3[$key]);
+                                $delete = $statement->execute();
+                            }
+                        }
+
+                        return 'false';
+                    }
+                    else {
+                        array_push($lastInserId3,$db->lastInsertId());
                     }
                 }
 
@@ -165,7 +277,11 @@ class StockItemsClass
                 $stmt = $db->prepare($sql);
                 $stmt->execute($sup);
                 if ($stmt->errorCode() == 0) {
-                }   }
+                }
+                else {
+                    return 'false';
+                }
+            }
 
             foreach ($selling_price as $key => $val) {
                 $sell = [
@@ -183,17 +299,20 @@ class StockItemsClass
                 $stmt->execute($sell);
                 if ($stmt->errorCode() == 0) {
 
-                }    } return 'true';
+                }
+               else {
+                   return 'false';
+               }
+            } return 'true';
         } else {
             $errors = $stmt->errorInfo();
             return $errors;
         }
     }
 
-    function getCostPrices()
+    function getSupplierNames()
     {
-        $query = DB::connectMe()->query('SELECT sp.su_id,sp.su_desc,sb.sb_id,sb.sb_price,sb.sb_last_buy FROM 0_supplier_names sp INNER JOIN
-                                                  0_stock_buy sb on sp.su_id=sb.su_id');
+        $query = DB::connectMe()->query('SELECT sp.su_id,sp.su_desc FROM 0_supplier_names sp');
         $users = $row = $query->fetchAll();
         return $users;
     }

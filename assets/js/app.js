@@ -3,7 +3,7 @@
  * @type {{Written by Shahzaib 13 April,2019}}
  */
 var stock = {
-    suuplierNames:'',
+    supplierNames:'',
     SupplierIds:'',
     PricesIds:'',
     editId:''
@@ -117,16 +117,12 @@ $(document).ready(function () {
             "dataSrc": ""
         },
         "initComplete": function (settings, json) {
-           // stock.getCostAndSellingPrices();
+            stock.getCostAndSellingPrices();
             $("table#stock_items tbody tr td:nth-child(2)").dblclick(function () {
                 var id = $(this).parent().find('td:nth-child(1)').text();
                 stock.editId = id;
                 stock.getDataforUpdation(id);
-                // var parent = $(this).parent();
                  $('#editStockItem').modal('show');
-                // $($(parent).find('td')).each(function (key, value) {
-                //     $($('#editStockItem input')[key]).val($($(parent).find('td')[key]).text());
-                // });
             });
 
         },
@@ -205,9 +201,17 @@ stock.AddStockItem = function () {
         dataType: "json",
         data: {data: data},
         success: function (response) {
-            $('#addStockItem').modal('hide');
-            $('#message p').text('New Item is successfullt added');
-            $('#message').modal('show');
+
+            if(response.success == false) {
+                $('#addStockItem').modal('hide');
+                $('#message p').text('This item cannot be added, double check the data');
+                $('#message').modal('show');
+            }
+
+            else {
+                $('#addStockItem').modal('hide');
+                $('#message2').modal('show');
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR, textStatus, errorThrown);
@@ -288,14 +292,23 @@ stock.EditStockItem = function () {
         dataType: "json",
         data: {data: data},
         success: function (response) {
-            $('#editStockItem').modal('hide');
-            $('#message p').text('Item is successfullt updated');
-            $('#message').modal('show');
+
+            if(response.success == false) {
+                $('#editStockItem').modal('hide');
+                $('#message p').text('Stock details failed to update successfully double check the data');
+                $('#message').modal('show');
+            }
+
+            else {
+                $('#editStockItem').modal('hide');
+                $('#message2 p').text('Stock details updated succesfully');
+                $('#message2').modal('show');
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR, textStatus, errorThrown);
             $('#editStockItem').modal('hide');
-            $('#message p').text('Updation failed due to some error');
+            $('#message p').text('Stock details failed to update successfully double check the data');
             $('#message').modal('show');
         }
     });
@@ -349,9 +362,9 @@ stock.getCostAndSellingPrices = function () {
         type: "get",
         dataType: "json",
         success: function (response) {
-            console.log(response);
-            stock.setCostPrices(response.CostPrices);
-            stock.setSellingPrices(response.SellingPrices);
+            stock.supplierNames = response.SupplierNames;
+            //stock.setCostPrices(response.CostPrices);
+            //stock.setSellingPrices(response.SellingPrices);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR, textStatus, errorThrown);
@@ -364,6 +377,7 @@ stock.setCostPrices = function (CostPrices) {
 
     $.each(CostPrices, function (index, value) {
 
+        stock.supplierNames = value.su_id;
         var CostTable = $('.cost-prices-table');
 
         var tr = '<tr>';
@@ -415,7 +429,6 @@ stock.getStockDetails = function () {
 };
 
 stock.appendToAddModel = function (StockDetails) {
-    console.log(StockDetails);
     $.each(StockDetails, function (index, value) {
         switch (index) {
             case 'dp_code':
@@ -432,7 +445,6 @@ stock.appendToAddModel = function (StockDetails) {
                 break;
             case 'su_desc':
                 stock.appendSupplierNames(value);
-                stock.suuplierNames = value;
                 break;
             case 'tx_id':
                 stock.appendTaxDesc(value);
@@ -498,7 +510,6 @@ stock.appendPricesDesc = function (prices) {
 };
 
 stock.priceUpdated =function() {
-    // console.log($(this).val());
     var $this = $(this);
     stock.CalculatePrice($this);
 };
@@ -589,23 +600,20 @@ stock.addNewRow = function() {
         tr += '</tr>';
 
         supplier_table.find('tbody').append(tr);
-
     $('.supplier-names'+ len).empty();
-    $.each(stock.suuplierNames, function (index, value) {
-        $('.supplier-names'+ len).append('<option value="' + value[0] + '">' + value[0] + '</option>');
+    $.each(stock.supplierNames, function (index, value) {
+        $('.supplier-names'+ len).append('<option value="' + value['su_desc'] + '">' + value['su_desc'] + '</option>');
     })
 
 };
 
 stock .getDataforUpdation = function(id) {
-  console.log(id);
     $.ajax({
         url: "lib/all.php?action=getDataforUpdation",
         type: "get",
         data:{name:'id',value:id},
         dataType: "json",
         success: function (response) {
-            console.log(response);
             stock.appendToUpdateModel(response.data);
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -636,8 +644,6 @@ stock.appendToUpdateModel = function(details) {
        SellingPriceTable.find('tbody').empty();
     supplier_table.find('tbody').empty();
     $.each(details,function(index,value){
-        console.log(index);
-        console.log(value);
 
         if((jQuery.inArray(value.sp_id, supplier_price) == -1)) {
             supplier_price.push(value.sp_id);
@@ -678,5 +684,13 @@ stock.appendToUpdateModel = function(details) {
             supplier_table.find('tbody').append(tr);
 
         }
+
+        // var len = $('#supplier-price-table2 tbody tr').length;
+        //  console.log(len-1);
+        // $('.supplier-names'+ (len-1)).empty();
+        // $.each(stock.supplierNames, function (index, value) {
+        //     $('.supplier-names'+ (len-1)).append('<option value="' + value['su_desc'] + '">' + value['su_desc'] + '</option>');
+        // })
+
        });
 };
