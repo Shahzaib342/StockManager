@@ -6,7 +6,8 @@ var stock = {
     supplierNames:'',
     SupplierIds:'',
     PricesIds:'',
-    editId:''
+    editId:'',
+    RoundingFlag:false
 };
 
 $(document).ready(function () {
@@ -490,16 +491,20 @@ stock.appendPricesDesc = function (prices) {
         tr += '<td><input type="text" class="form-control price-description'+ index+'" disabled value="' + value[0]  +'"></td>';
         tr += '<td><input type="number" class="form-control price'+ index+'"></td>';
         tr += '<td><input type="number" class="form-control markup'+index+'" disabled></td>';
-        tr += '<td><input type="number" class="form-control rounding'+index+'" disabled></td>';
+        tr += '<td><input type="number" class="form-control rounding'+index+'"></td>';
         tr += '</tr>';
-        $('.price'+ index).attr('onkeypress','stock.priceUpdated();');
+        $('.price'+ index).attr('keyup','stock.priceUpdated();');
 
-        $(document).on( 'keypress', '.price'+ index, function(){
+        $(document).on( 'keyup', '.price'+ index, function(){
             var $this = $(this);
             stock.CalculatePrice($this);
         } );
 
-        $(document).on( 'keypress', '.markup'+ index, function(){
+        $(document).on( 'keyup', '.rounding'+ index, function(){
+            stock.RoundingFlag = false;
+        } );
+
+        $(document).on( 'keyup', '.markup'+ index, function(){
             var $this = $(this);
             stock.CalculateMarkup($this);
         } );
@@ -529,7 +534,6 @@ stock.appendTaxDesc = function (taxes) {
 };
 
 stock.CalculateMarkup = function (param) {
-
     var CostPerUnit = $('#cost-per-unit');
     var Markup = param;
     var Price = param.parent().parent().find('td:nth-child(2) input');
@@ -539,7 +543,15 @@ stock.CalculateMarkup = function (param) {
     var TotalPrice = TenPercentofCostPerUnit + parseInt(CostPerUnit.val());
     Price.val(TotalPrice);
 
-    var parts = TotalPrice.toString().split('.');
+    if(Rounding.val() != '') {
+        if(stock.RoundingFlag ==false) {
+            var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
+            Price.val(price);
+            stock.RoundingFlag = true;
+        }
+
+    }
+    var parts = Price.val().toString().split('.');
     Rounding.val('.' + parts[1]);
 };
 
@@ -550,16 +562,24 @@ stock.CalculateMarkup2 = function (param) {
     var Price = param.parent().parent().find('td:nth-child(3) input');
     var Rounding = param.parent().parent().find('td:nth-child(5) input');
 
-    var TenPercentofCostPerUnit = (parseInt(Markup.val()) / 100) * parseInt(CostPerUnit.val());
-    var TotalPrice = TenPercentofCostPerUnit + parseInt(CostPerUnit.val());
+    var TenPercentofCostPerUnit = (parseFloat(Markup.val()) / 100) * parseFloat(CostPerUnit.val());
+    var TotalPrice = TenPercentofCostPerUnit + parseFloat(CostPerUnit.val());
     Price.val(TotalPrice);
 
-    var parts = TotalPrice.toString().split('.');
+    if(Rounding.val() != '') {
+        if(stock.RoundingFlag ==false) {
+            var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
+            Price.val(price);
+            stock.RoundingFlag = true;
+        }
+
+    }
+    var parts = Price.val().toString().split('.');
     Rounding.val('.' + parts[1]);
+
 };
 
 stock.CalculatePrice = function (param) {
-
     var CostPerUnit = $('#cost-per-unit');
     var Markup = param.parent().parent().find('td:nth-child(3) input');
     var Price = param;
@@ -569,8 +589,22 @@ stock.CalculatePrice = function (param) {
     var TenPercentofMarkup = (parseInt(TenPercent) / 100) * parseInt(CostPerUnit.val());
     Markup.val(TenPercentofMarkup);
 
-    var parts = TenPercentofMarkup.toString().split('.');
+
+    if(Rounding.val() != '') {
+        if(stock.RoundingFlag ==false) {
+            var price = (parseInt(Price.val()) + parseFloat(Rounding.val()));
+            Price.val(price);
+            stock.RoundingFlag = true;
+        }
+
+        else {
+
+        }
+
+    }
+    var parts = Price.val().toString().split('.');
     Rounding.val('.' + parts[1]);
+
 };
 
 stock.CalculatePrice2 = function (param) {
@@ -584,7 +618,15 @@ stock.CalculatePrice2 = function (param) {
     var TenPercentofMarkup = (parseInt(TenPercent) / 100) * parseInt(CostPerUnit.val());
     Markup.val(TenPercentofMarkup);
 
-    var parts = TenPercentofMarkup.toString().split('.');
+    if(Rounding.val() != '') {
+        if(stock.RoundingFlag ==false) {
+            var price = (parseInt(Price.val()) + parseFloat(Rounding.val()));
+            Price.val(price);
+            stock.RoundingFlag = true;
+        }
+
+    }
+    var parts = Price.val().toString().split('.');
     Rounding.val('.' + parts[1]);
 };
 
@@ -652,16 +694,20 @@ stock.appendToUpdateModel = function(details) {
             tr += '<td><input type="text" class="form-control price-description' + index + '" disabled value="' + value[20] + '"></td>';
             tr += '<td><input type="number" class="form-control price' + index + '" value="' + value.ss_price + '"></td>';
             tr += '<td><input type="number" class="form-control markup' + index + '" disabled value="' + value.ss_markup + '"></td>';
-            tr += '<td><input type="number" class="form-control rounding' + index + '" disabled value="' + value.ss_round + '"></td>';
+            tr += '<td><input type="number" class="form-control rounding' + index + '" value="' + value.ss_round + '"></td>';
             tr += '</tr>';
-            $('.price' + index).attr('onkeypress', 'stock.priceUpdated();');
-
-            $(document).on('keypress', '.price' + index, function () {
+            $('.price' + index).attr('keyup', 'stock.priceUpdated();');
+//change keydown keyup paste input keypress
+            $(document).on('keyup', '.price' + index, function () {
                 var $this = $(this);
                 stock.CalculatePrice2($this);
             });
 
-            $(document).on('keypress', '.markup' + index, function () {
+            $(document).on('keyup', '.rounding' + index, function () {
+                stock.RoundingFlag = false;
+            });
+
+            $(document).on('keyup', '.markup' + index, function () {
                 var $this = $(this);
                 stock.CalculateMarkup2($this);
             });
@@ -685,12 +731,6 @@ stock.appendToUpdateModel = function(details) {
 
         }
 
-        // var len = $('#supplier-price-table2 tbody tr').length;
-        //  console.log(len-1);
-        // $('.supplier-names'+ (len-1)).empty();
-        // $.each(stock.supplierNames, function (index, value) {
-        //     $('.supplier-names'+ (len-1)).append('<option value="' + value['su_desc'] + '">' + value['su_desc'] + '</option>');
-        // })
 
        });
 };

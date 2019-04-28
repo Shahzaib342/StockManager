@@ -112,7 +112,7 @@
                                         <td><inpu type="text" class="form-control price-description"></td>
                                         <td><input type="number" class="form-control price" ></td>
                                         <td><input type="number" class="form-control markup"  disabled></td>
-                                        <td><input type="number" class="form-control rounding"  disabled></td>
+                                        <td><input type="number" class="form-control rounding"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -251,7 +251,7 @@
                                         <td><input type="text" class="form-control price-description"></td>
                                         <td><input type="number" class="form-control price" ></td>
                                         <td><input type="number" class="form-control markup"  disabled></td>
-                                        <td><input type="number" class="form-control rounding"  disabled></td>
+                                        <td><input type="number" class="form-control rounding"></td>
                                     </tr>
                                     </tbody>
                                 </table>
