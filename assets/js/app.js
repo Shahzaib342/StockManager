@@ -25,9 +25,9 @@ $(document).ready(function () {
             var CostPerUnitValue = CostPerCase.val() / CaseSize.val();
             CostPerUnit.val(CostPerUnitValue);
             if (MarkupCheckbox.is(':checked')) {
-               // stock.CalculateMarkup();
+               stock.reCalculateMarkup();
             } else {
-               // stock.CalculatePrice();
+               stock.reCalculatePrice();
             }
         }
     });
@@ -38,9 +38,9 @@ $(document).ready(function () {
             var CostPerUnitValue = CostPerCase.val() / CaseSize.val();
             CostPerUnit.val(CostPerUnitValue);
             if (MarkupCheckbox.is(':checked')) {
-                //stock.CalculateMarkup();
+                stock.reCalculateMarkup();
             } else {
-               // stock.CalculatePrice();
+                stock.reCalculatePrice();
             }
         }
     });
@@ -50,9 +50,9 @@ $(document).ready(function () {
             var CostPerUnitValue = CostPerCase2.val() / CaseSize2.val();
             CostPerUnit2.val(CostPerUnitValue);
             if (MarkupCheckbox.is(':checked')) {
-                // stock.CalculateMarkup();
+                stock.reCalculateMarkup2();
             } else {
-                // stock.CalculatePrice();
+                stock.reCalculatePrice2();
             }
         }
     });
@@ -63,9 +63,9 @@ $(document).ready(function () {
             var CostPerUnitValue = CostPerCase2.val() / CaseSize2.val();
             CostPerUnit2.val(CostPerUnitValue);
             if (MarkupCheckbox.is(':checked')) {
-                //stock.CalculateMarkup();
+                stock.reCalculateMarkup2();
             } else {
-                // stock.CalculatePrice();
+                stock.reCalculatePrice2();
             }
         }
     });
@@ -211,7 +211,7 @@ stock.AddStockItem = function () {
 
             else {
                 $('#addStockItem').modal('hide');
-                $('#message2').modal('show');
+                //$('#message2').modal('show');
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -237,7 +237,7 @@ stock.EditStockItem = function () {
     });
     supplier_details.push({
         name: 'id',
-        value: parseInt(stock.editId)
+        value: parseFloat(stock.editId)
     });
     $('#editStockItem .stock-first-table select').each(function (key, value) {
         supplier_details.push({
@@ -302,8 +302,8 @@ stock.EditStockItem = function () {
 
             else {
                 $('#editStockItem').modal('hide');
-                $('#message2 p').text('Stock details updated succesfully');
-                $('#message2').modal('show');
+                //$('#message2 p').text('Stock details updated succesfully');
+                //$('#message2').modal('show');
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -539,8 +539,8 @@ stock.CalculateMarkup = function (param) {
     var Price = param.parent().parent().find('td:nth-child(2) input');
     var Rounding = param.parent().parent().find('td:nth-child(4) input');
 
-    var TenPercentofCostPerUnit = (parseInt(Markup.val()) / 100) * parseInt(CostPerUnit.val());
-    var TotalPrice = TenPercentofCostPerUnit + parseInt(CostPerUnit.val());
+    var TenPercentofCostPerUnit = ((parseFloat(Markup.val()) * parseFloat(CostPerUnit.val())) / 100);
+    var TotalPrice =  parseFloat(CostPerUnit.val()) + TenPercentofCostPerUnit;
     Price.val(TotalPrice);
 
     if(Rounding.val() != '') {
@@ -553,6 +553,30 @@ stock.CalculateMarkup = function (param) {
     }
     var parts = Price.val().toString().split('.');
     Rounding.val('.' + parts[1]);
+};
+
+stock.reCalculateMarkup = function() {
+    $('#selling-price-table tbody tr td:nth-child(2) input').each(function (index, value) {
+        var CostPerUnit = $('#cost-per-unit');
+        var Markup = $(this);
+        var Price = $(this).parent().parent().find('td:nth-child(2) input');
+        var Rounding = $(this).parent().parent().find('td:nth-child(4) input');
+
+        var TenPercentofCostPerUnit = ((parseFloat(Markup.val()) * parseFloat(CostPerUnit.val())) / 100);
+        var TotalPrice =  parseFloat(CostPerUnit.val()) + TenPercentofCostPerUnit;
+        Price.val(TotalPrice);
+
+        if (Rounding.val() != '') {
+            if (stock.RoundingFlag == false) {
+                var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
+                Price.val(price);
+                stock.RoundingFlag = true;
+            }
+
+        }
+        var parts = Price.val().toString().split('.');
+        Rounding.val('.' + parts[1]);
+    });
 };
 
 stock.CalculateMarkup2 = function (param) {
@@ -562,8 +586,8 @@ stock.CalculateMarkup2 = function (param) {
     var Price = param.parent().parent().find('td:nth-child(3) input');
     var Rounding = param.parent().parent().find('td:nth-child(5) input');
 
-    var TenPercentofCostPerUnit = (parseFloat(Markup.val()) / 100) * parseFloat(CostPerUnit.val());
-    var TotalPrice = TenPercentofCostPerUnit + parseFloat(CostPerUnit.val());
+    var TenPercentofCostPerUnit = ((parseFloat(Markup.val()) * parseFloat(CostPerUnit.val())) / 100);
+    var TotalPrice =  parseFloat(CostPerUnit.val()) + TenPercentofCostPerUnit;
     Price.val(TotalPrice);
 
     if(Rounding.val() != '') {
@@ -579,20 +603,44 @@ stock.CalculateMarkup2 = function (param) {
 
 };
 
+stock.reCalculateMarkup2 = function() {
+    $('#selling-price-table2 tbody tr td:nth-child(4) input').each(function (index, value) {
+        var CostPerUnit = $('#cost-per-unit2');
+        var Markup = $(this);
+        var Price = $(this).parent().parent().find('td:nth-child(3) input');
+        var Rounding = $(this).parent().parent().find('td:nth-child(5) input');
+
+        var TenPercentofCostPerUnit = ((parseFloat(Markup.val()) * parseFloat(CostPerUnit.val())) / 100);
+        var TotalPrice =  parseFloat(CostPerUnit.val()) + TenPercentofCostPerUnit;
+        Price.val(TotalPrice);
+
+        if (Rounding.val() != '') {
+            if (stock.RoundingFlag == false) {
+                var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
+                Price.val(price);
+                stock.RoundingFlag = true;
+            }
+
+        }
+        var parts = Price.val().toString().split('.');
+        Rounding.val('.' + parts[1]);
+    });
+};
+
 stock.CalculatePrice = function (param) {
     var CostPerUnit = $('#cost-per-unit');
     var Markup = param.parent().parent().find('td:nth-child(3) input');
     var Price = param;
     var Rounding = param.parent().parent().find('td:nth-child(4) input');
 
-    var TenPercent = parseInt(Price.val()) - parseInt(CostPerUnit.val());
-    var TenPercentofMarkup = (parseInt(TenPercent) / 100) * parseInt(CostPerUnit.val());
+    var TenPercent = parseFloat(Price.val()) - parseFloat(CostPerUnit.val());
+    var TenPercentofMarkup = (parseFloat(TenPercent) * 100) / parseFloat(CostPerUnit.val());
     Markup.val(TenPercentofMarkup);
 
 
     if(Rounding.val() != '') {
         if(stock.RoundingFlag ==false) {
-            var price = (parseInt(Price.val()) + parseFloat(Rounding.val()));
+            var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
             Price.val(price);
             stock.RoundingFlag = true;
         }
@@ -607,6 +655,39 @@ stock.CalculatePrice = function (param) {
 
 };
 
+stock.reCalculatePrice = function() {
+    $('#selling-price-table tbody tr td:nth-child(2) input, #selling-price-table2 tbody tr td:nth-child(2) input').each(function (index, value) {
+        $(this).find('input').prop('disabled', true);
+        var param = $(this);
+        var CostPerUnit = $('#cost-per-unit');
+        var Markup = $(this).parent().parent().find('td:nth-child(3) input');
+        var Price = param;
+        var Rounding = $(this).parent().parent().find('td:nth-child(4) input');
+
+        var TenPercent = parseFloat(Price.val()) - parseFloat(CostPerUnit.val());
+        var TenPercentofMarkup = (parseFloat(TenPercent) * 100) / parseFloat(CostPerUnit.val());
+        Markup.val(TenPercentofMarkup);
+
+
+        if(Rounding.val() != '') {
+            if(stock.RoundingFlag ==false) {
+                var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
+                Price.val(price);
+                stock.RoundingFlag = true;
+            }
+
+            else {
+
+            }
+
+        }
+        var parts = Price.val().toString().split('.');
+        Rounding.val('.' + parts[1]);
+    });
+
+
+};
+
 stock.CalculatePrice2 = function (param) {
 
     var CostPerUnit = $('#cost-per-unit2');
@@ -614,13 +695,13 @@ stock.CalculatePrice2 = function (param) {
     var Price = param;
     var Rounding = param.parent().parent().find('td:nth-child(5) input');
 
-    var TenPercent = parseInt(Price.val()) - parseInt(CostPerUnit.val());
-    var TenPercentofMarkup = (parseInt(TenPercent) / 100) * parseInt(CostPerUnit.val());
+    var TenPercent = parseFloat(Price.val()) - parseFloat(CostPerUnit.val());
+    var TenPercentofMarkup = (parseFloat(TenPercent) * 100) / parseFloat(CostPerUnit.val());
     Markup.val(TenPercentofMarkup);
 
     if(Rounding.val() != '') {
         if(stock.RoundingFlag ==false) {
-            var price = (parseInt(Price.val()) + parseFloat(Rounding.val()));
+            var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
             Price.val(price);
             stock.RoundingFlag = true;
         }
@@ -629,6 +710,31 @@ stock.CalculatePrice2 = function (param) {
     var parts = Price.val().toString().split('.');
     Rounding.val('.' + parts[1]);
 };
+
+stock.reCalculatePrice2 = function() {
+    $('#selling-price-table2 tbody tr td:nth-child(3) input').each(function (index, value) {
+        var CostPerUnit = $('#cost-per-unit2');
+        var Markup = $(this).parent().parent().find('td:nth-child(4) input');
+        var Price = $(this);
+        var Rounding = $(this).parent().parent().find('td:nth-child(5) input');
+
+        var TenPercent = parseFloat(Price.val()) - parseFloat(CostPerUnit.val());
+        var TenPercentofMarkup = (parseFloat(TenPercent) * 100) / parseFloat(CostPerUnit.val());
+        Markup.val(TenPercentofMarkup);
+
+        if (Rounding.val() != '') {
+            if (stock.RoundingFlag == false) {
+                var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
+                Price.val(price);
+                stock.RoundingFlag = true;
+            }
+
+        }
+        var parts = Price.val().toString().split('.');
+        Rounding.val('.' + parts[1]);
+    });
+};
+
 
 stock.addNewRow = function() {
 
