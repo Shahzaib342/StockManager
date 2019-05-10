@@ -180,16 +180,16 @@
                                 <input type="text" class="form-control" id="desc">
                             </div>
                             <div class="form-group">
-                                <input class="form-control" id="department">
+                                <select class="form-control" id="department"></select>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" id="sub_dept">
+                                <select class="form-control" id="sub_dept"></select>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" id="group">
+                                <select class="form-control" id="group"></select>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" id="tax">
+                                <select class="form-control" id="tax"></select>
                             </div>
                             <div class="form-group">
                                 <input type="number" class="form-control" id="case-size2">

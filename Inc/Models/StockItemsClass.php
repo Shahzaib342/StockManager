@@ -240,15 +240,15 @@ class StockItemsClass
 
         $da = [
             'si_code' => $stock_details[0]['value'],
-            'dp_desc' => $stock_details[2]['value'],
-            'sd_desc' => $stock_details[3]['value'],
-            'gr_desc' => $stock_details[4]['value'],
+            'dp_desc' => $stock_details[6]['value'],
+            'sd_desc' => $stock_details[7]['value'],
+            'gr_desc' => $stock_details[8]['value'],
             'si_desc' => $stock_details[1]['value'],
-            'tx_id' => $stock_details[5]['value'],
-            'si_case_size' => $stock_details[6]['value'],
-            'si_cost_case' => $stock_details[7]['value'],
-            'si_cost_unit' => $stock_details[8]['value'],
-            'si_id' => $stock_details[9]['value']
+            'tx_id' => $stock_details[9]['value'],
+            'si_case_size' => $stock_details[2]['value'],
+            'si_cost_case' => $stock_details[3]['value'],
+            'si_cost_unit' => $stock_details[4]['value'],
+            'si_id' => $stock_details[5]['value']
         ];
         $sql = "UPDATE 0_stock_items 
                 SET 0_stock_items.si_desc = :si_desc,

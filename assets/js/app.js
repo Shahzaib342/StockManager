@@ -123,6 +123,7 @@ $(document).ready(function () {
                 var id = $(this).parent().find('td:nth-child(1)').text();
                 stock.editId = id;
                 stock.getDataforUpdation(id);
+                stock.getStockDetails('edit');
                  $('#editStockItem').modal('show');
             });
 
@@ -413,14 +414,14 @@ stock.setSellingPrices = function (SellingPrices) {
 
 };
 
-stock.getStockDetails = function () {
+stock.getStockDetails = function (param) {
 
     $.ajax({
         url: "lib/all.php?action=getStockDetails",
         type: "get",
         dataType: "json",
         success: function (response) {
-            stock.appendToAddModel(response.StockDetails);
+            stock.appendToAddModel(response.StockDetails,param);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR, textStatus, errorThrown);
@@ -429,26 +430,27 @@ stock.getStockDetails = function () {
 
 };
 
-stock.appendToAddModel = function (StockDetails) {
+stock.appendToAddModel = function (StockDetails,param) {
     $.each(StockDetails, function (index, value) {
         switch (index) {
             case 'dp_code':
-                stock.appendDepartmentDesc(value);
+                stock.appendDepartmentDesc(value,param);
                 break;
             case 'gr_code':
-                stock.appendGroupsDesc(value);
+                stock.appendGroupsDesc(value,param);
                 break;
             case 'sd_code':
-                stock.appendSubDepartmentDesc(value);
+                stock.appendSubDepartmentDesc(value,param);
                 break;
             case 'sp_desc':
                 stock.appendPricesDesc(value);
                 break;
             case 'su_desc':
-                stock.appendSupplierNames(value);
+                stock.appendSupplierNames(value,param);
+                stock.supplierNames = value;
                 break;
             case 'tx_id':
-                stock.appendTaxDesc(value);
+                stock.appendTaxDesc(value,param);
                 break;
             case 'su_id':
                 stock.SupplierIds = value;
@@ -459,25 +461,51 @@ stock.appendToAddModel = function (StockDetails) {
     });
 };
 
-stock.appendDepartmentDesc = function (departments) {
-    $('#department').empty();
-    $.each(departments, function (index, value) {
-        $('#department').append('<option value="' + value[0] + '">' + value[0] + '</option>');
-    })
+stock.appendDepartmentDesc = function (departments,param) {
+
+    if(param == 'edit') {
+        $('#editStockItem #department').empty();
+        $.each(departments, function (index, value) {
+            $('#editStockItem #department').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+        })
+    }
+    else {
+        $('#department').empty();
+        $.each(departments, function (index, value) {
+            $('#department').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+        })
+    }
 };
 
-stock.appendGroupsDesc = function (groups) {
-    $('#group').empty();
-    $.each(groups, function (index, value) {
-        $('#group').append('<option value="' + value[0] + '">' + value[0] + '</option>');
-    })
+stock.appendGroupsDesc = function (groups,param) {
+    if(param == 'edit') {
+        $('#editStockItem #group').empty();
+        $.each(groups, function (index, value) {
+            $('#editStockItem #group').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+        })
+    }
+    else {
+        $('#group').empty();
+        $.each(groups, function (index, value) {
+            $('#group').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+        })
+    }
 };
 
-stock.appendSubDepartmentDesc = function (Subdepartments) {
-    $('#sub_dept').empty();
-    $.each(Subdepartments, function (index, value) {
-        $('#sub_dept').append('<option value="' + value[0] + '">' + value[0] + '</option>');
-    })
+stock.appendSubDepartmentDesc = function (Subdepartments,param) {
+
+    if(param == 'edit') {
+        $('#editStockItem #sub_dept').empty();
+        $.each(Subdepartments, function (index, value) {
+            $('#editStockItem #sub_dept').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+        })
+    }
+    else {
+        $('#sub_dept').empty();
+        $.each(Subdepartments, function (index, value) {
+            $('#sub_dept').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+        })
+    }
 };
 
 stock.appendPricesDesc = function (prices) {
@@ -519,18 +547,39 @@ stock.priceUpdated =function() {
     stock.CalculatePrice($this);
 };
 
-stock.appendSupplierNames = function (supplierNames) {
-    $('.supplier-names').empty();
-    $.each(supplierNames, function (index, value) {
-        $('.supplier-names').append('<option value="' + value[0] + '">' + value[0] + '</option>');
-    })
+stock.appendSupplierNames = function (supplierNames,param) {
+
+    if(param == 'edit') {
+
+        $('#editStockItem .supplier-names').empty();
+        $.each(supplierNames, function (index, value) {
+            $('#editStockItem .supplier-names').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+        })
+    }
+    else {
+
+        $('.supplier-names').empty();
+        $.each(supplierNames, function (index, value) {
+            $('.supplier-names').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+        })
+    }
 };
 
-stock.appendTaxDesc = function (taxes) {
-    $('#tax').empty();
-    $.each(taxes, function (index, value) {
-        $('#tax').append('<option value="' + value[0] + '">' + value[0] + '</option>');
-    })
+stock.appendTaxDesc = function (taxes,param) {
+
+    if(param == 'edit') {
+        $('#editStockItem #tax').empty();
+        $.each(taxes, function (index, value) {
+            $('#editStockItem #tax').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+        });
+    }
+    else {
+        $('#tax').empty();
+        $.each(taxes, function (index, value) {
+            $('#tax').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+        });
+    }
+
 };
 
 stock.CalculateMarkup = function (param) {
@@ -828,10 +877,19 @@ stock.appendToUpdateModel = function(details) {
             var len = $('#supplier-price-table2 tbody tr').length;
             var tr = '<tr>';
             tr += '<td><input type="number" class="form-control supplier-id' + len + '" value="' + value.sb_id + '"></td>';
-            tr += '<td><select class="form-control supplier-names' + len + '"><option value="' + value.su_desc + '">' + value.su_desc + '</option></select></td>';
+            tr += '<td><select class="form-control supplier-names' + len + '">';
+            $.each(stock.supplierNames, function (index, val) {
+                console.log(val);
+                tr += '<option value="' + val['su_desc'] + '">' + val['su_desc'] + '</option>';
+                //$('#editStockItem .supplier-names').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+            });
+            //tr += '<option value="' + value.su_desc + '" selected>' + value.su_desc + '</option>';
+            tr += '</select></td>';
+            //<option value="' + value.su_desc + '">' + value.su_desc + '</option></select></td>';
             tr += '<td><input type="number" class="form-control supplier-price' + len + '" value="' + value.sb_price + '"></td>';
             tr += '<td><input type="date" class="form-control last-bought' + len + '" value="' + value.sb_last_buy + '"></td>';
             tr += '</tr>';
+
 
             supplier_table.find('tbody').append(tr);
 
