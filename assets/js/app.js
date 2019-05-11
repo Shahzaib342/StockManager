@@ -882,7 +882,7 @@ stock.appendToUpdateModel = function(details) {
             supplier_price.push(value.sp_id);
             var tr = '<tr>';
             tr += '<td><input type="number" class="form-control price-id' + len + '" value="' + value.ss_id + '"></td>';
-            tr += '<td><input type="text" class="form-control price-description' + index + '" disabled value="' + value[20] + '"></td>';
+            tr += '<td><input type="text" class="form-control price-description' + index + '" disabled value="' + value.sp_desc + '"></td>';
             tr += '<td><input type="number" class="form-control price' + index + '" value="' + value.ss_price + '"></td>';
             tr += '<td><input type="number" class="form-control markup' + index + '" disabled value="' + value.ss_markup + '"></td>';
             tr += '<td><input type="number" class="form-control rounding' + index + '" value="' + value.ss_round + '"></td>';
@@ -914,7 +914,9 @@ stock.appendToUpdateModel = function(details) {
             var tr = '<tr>';
             tr += '<td><input type="number" class="form-control supplier-id' + len + '" value="' + value.sb_id + '"></td>';
             tr += '<td><select class="form-control supplier-names' + len + '">';
+            tr += '<option value="' + value.su_desc + '">' + value.su_desc + '</option>';
             $.each(stock.supplierNames, function (index, val) {
+                if(val['su_desc'] != value.su_desc)
                 tr += '<option value="' + val['su_desc'] + '">' + val['su_desc'] + '</option>';
                 //$('#editStockItem .supplier-names').append('<option value="' + value[0] + '">' + value[0] + '</option>');
             });

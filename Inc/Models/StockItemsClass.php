@@ -281,11 +281,11 @@ class StockItemsClass
         $stmt->execute($da);
         if ($stmt->errorCode() == 0) {
             foreach ($supplier_price as $index => $value) {
+                $supplier = $value[0]['value'];
+                $query = $db->query("SELECT su_id from 0_supplier_names where su_desc = '$supplier'");
+                $rows = $row = $query->fetchAll();
 
                 if (!is_numeric($value[1]['value'])) {
-                    $supplier = $value[0]['value'];
-                    $query = $db->query("SELECT su_id from 0_supplier_names where su_desc = '$supplier'");
-                    $rows = $row = $query->fetchAll();
                     $StockBuy = [
                         'sb_price' => $value[2]['value'],
                         'sb_last_buy' => $value[3]['value'],
@@ -309,10 +309,12 @@ class StockItemsClass
                         'sb_price' => $value[2]['value'],
                         'sb_last_buy' => $value[3]['value'],
                         'sb_id' => $value[1]['value'],
+                        'supplier_names_id' => $rows[0]['su_id']
                     ];
                     $sql = "UPDATE 0_stock_buy 
                 SET 0_stock_buy.sb_price = :sb_price,
-                0_stock_buy.sb_last_buy = :sb_last_buy
+                0_stock_buy.sb_last_buy = :sb_last_buy,
+                0_stock_buy.su_id = :supplier_names_id
                 WHERE 0_stock_buy.sb_id = :sb_id";
                     $stmt = $db->prepare($sql);
                     $stmt->execute($sup);
