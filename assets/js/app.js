@@ -195,6 +195,11 @@ stock.AddStockItem = function () {
         selling_price.push(selling_price_array);
     });
 
+    supplier_details.push({
+        name: 'si_auto_markup',
+        value:  $('#addStockItem .auto-markup').prop('checked')
+    });
+
     var data = [supplier_details,selling_price,supplier_prices];
 
     $.ajax({
@@ -285,6 +290,11 @@ stock.EditStockItem = function () {
         });
 
         selling_price.push(selling_price_array);
+    });
+
+    supplier_details.push({
+        name: 'si_auto_markup',
+        value:  $('#editStockItem .auto-markup').prop('checked')
     });
 
     var data = [supplier_details,selling_price,supplier_prices];
@@ -853,7 +863,12 @@ stock.appendToUpdateModel = function(details) {
     $('#editStockItem #cost-per-case2').val(details[0].si_cost_case);
     $('#editStockItem #cost-per-unit2').val(details[0].si_cost_unit);
 
+    if(details[0].si_auto_markup == '1') {
+        setTimeout(function(){
+            $('.auto-markup').trigger('click');
+        },1000);
 
+    }
 
 
        var SellingPriceTable = $('#editStockItem #selling-price-table2');

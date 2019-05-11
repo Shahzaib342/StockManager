@@ -37,6 +37,13 @@ class StockItemsClass
         $selling_prices = $data[1];
         $supplier_prices = $data[2];
 
+        if ($stock_details[9]['value'] == 'true') {
+            $auto_markup = 1;
+        }
+        else {
+            $auto_markup = 0;
+        }
+
         $StockItems = [
             'si_code' => $stock_details[0]['value'],
             'si_desc' => $stock_details[1]['value'],
@@ -47,11 +54,12 @@ class StockItemsClass
             'sd_code' => $stock_details[6]['value'],
             'gr_code' => $stock_details[7]['value'],
             'tx_id' => $stock_details[8]['value'],
+             'si_auto_markup' =>$auto_markup
         ];
 
         $sql = "INSERT INTO 0_stock_items (si_code, si_desc,dp_code,sd_code,gr_code,tx_id,si_case_size,si_cost_case,
-              si_cost_unit) VALUES (:si_code, :si_desc,:dp_code, :sd_code,:gr_code, :tx_id,:si_case_size, :si_cost_case,
-                :si_cost_unit)";
+              si_cost_unit,si_auto_markup) VALUES (:si_code, :si_desc,:dp_code, :sd_code,:gr_code, :tx_id,:si_case_size, :si_cost_case,
+                :si_cost_unit,:si_auto_markup)";
         $stmt = $db->prepare($sql);
         $stmt->execute($StockItems);
 
@@ -238,6 +246,12 @@ class StockItemsClass
         $selling_price = $data[1];
         $supplier_price = $data[2];
 
+        if ($stock_details[10]['value'] == 'true') {
+            $auto_markup = 1;
+        }
+        else {
+            $auto_markup = 0;
+        }
         $da = [
             'si_code' => $stock_details[0]['value'],
             'dp_desc' => $stock_details[6]['value'],
@@ -248,7 +262,8 @@ class StockItemsClass
             'si_case_size' => $stock_details[2]['value'],
             'si_cost_case' => $stock_details[3]['value'],
             'si_cost_unit' => $stock_details[4]['value'],
-            'si_id' => $stock_details[5]['value']
+            'si_id' => $stock_details[5]['value'],
+            'si_auto_markup' => $auto_markup
         ];
         $sql = "UPDATE 0_stock_items 
                 SET 0_stock_items.si_desc = :si_desc,
@@ -259,7 +274,8 @@ class StockItemsClass
                  0_stock_items.tx_id = :tx_id,
                 0_stock_items.si_case_size = :si_case_size,
                 0_stock_items.si_cost_case = :si_cost_case,
-                0_stock_items.si_cost_unit = :si_cost_unit
+                0_stock_items.si_cost_unit = :si_cost_unit,
+                0_stock_items.si_auto_markup = :si_auto_markup
                 WHERE 0_stock_items.si_id = :si_id";
         $stmt = $db->prepare($sql);
         $stmt->execute($da);
@@ -369,7 +385,7 @@ class StockItemsClass
     }
     function getDataforUpdation($data) {
 
-        $query = DB::connectMe()->query("SELECT sp.si_id,sp.si_desc,sp.si_code,sp.tx_id,sp.dp_code,sp.sd_code,sp.gr_code,sp.si_cost_case,sp.si_case_size,
+        $query = DB::connectMe()->query("SELECT sp.si_id,sp.si_auto_markup,sp.si_desc,sp.si_code,sp.tx_id,sp.dp_code,sp.sd_code,sp.gr_code,sp.si_cost_case,sp.si_case_size,
                                                sp.si_cost_unit,
                                                 sb.sb_id,sb.su_id,sb.sb_price,sb.sb_last_buy,
                                                  ss.ss_id,ss.sp_id,ss.ss_price,ss.ss_markup,ss.ss_round,sup.su_desc,pri.sp_desc
