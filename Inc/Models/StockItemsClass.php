@@ -375,9 +375,32 @@ class StockItemsClass
                     $StockDetailsArray[$val] = $rows;
                 }
             } else {
-                $query = DB::connectMe()->query("SELECT $value from $StockItem");
-                $rows = $row = $query->fetchAll();
-                $StockDetailsArray[$value] = $rows;
+                if($value == 'gr_code') {
+                    $query = DB::connectMe()->query("SELECT gr_code,gr_desc from $StockItem");
+                    $rows = $row = $query->fetchAll();
+                    $StockDetailsArray[$value] = $rows;
+                }
+                else if ($value == 'dp_code') {
+                    $query = DB::connectMe()->query("SELECT dp_code,dp_desc from $StockItem");
+                    $rows = $row = $query->fetchAll();
+                    $StockDetailsArray[$value] = $rows;
+                }
+                else if ($value == 'sd_code') {
+                    $query = DB::connectMe()->query("SELECT sd_code,sd_desc from $StockItem");
+                    $rows = $row = $query->fetchAll();
+                    $StockDetailsArray[$value] = $rows;
+                }
+                else if ($value == 'tx_id') {
+                    $query = DB::connectMe()->query("SELECT tx_id,tx_desc from $StockItem");
+                    $rows = $row = $query->fetchAll();
+                    $StockDetailsArray[$value] = $rows;
+                }
+                else {
+                    $query = DB::connectMe()->query("SELECT $value from $StockItem");
+                    $rows = $row = $query->fetchAll();
+                    $StockDetailsArray[$value] = $rows;
+                }
+
             }
         }
 
