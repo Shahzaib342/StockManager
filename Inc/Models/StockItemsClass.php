@@ -264,25 +264,48 @@ class StockItemsClass
         $stmt = $db->prepare($sql);
         $stmt->execute($da);
         if ($stmt->errorCode() == 0) {
-            foreach($supplier_price as $index=>$value) {
-                $sup = [
-                    'sb_price' => $value[2]['value'],
-                    'sb_last_buy' => $value[3]['value'],
-                    'sb_id' => $value[1]['value'],
-                ];
-                $sql = "UPDATE 0_stock_buy 
+            foreach ($supplier_price as $index => $value) {
+
+                if (!is_numeric($value[1]['value'])) {
+                    $supplier = $value[0]['value'];
+                    $query = $db->query("SELECT su_id from 0_supplier_names where su_desc = '$supplier'");
+                    $rows = $row = $query->fetchAll();
+                    $StockBuy = [
+                        'sb_price' => $value[2]['value'],
+                        'sb_last_buy' => $value[3]['value'],
+                        'supplier_names_id' => $rows[0]['su_id'],
+                        'si_id' => $stock_details[5]['value']
+                    ];
+
+                    $sql = "INSERT INTO 0_stock_buy (su_id,si_id, sb_price,sb_last_buy) VALUES
+                    (:supplier_names_id,:si_id, :sb_price,:sb_last_buy)";
+                    $stmt = $db->prepare($sql);
+                    $stmt->execute($StockBuy);
+                    if (!$stmt) {
+                        return 'false';
+                    } else {
+                        //
+                    }
+                }
+
+                else {
+                    $sup = [
+                        'sb_price' => $value[2]['value'],
+                        'sb_last_buy' => $value[3]['value'],
+                        'sb_id' => $value[1]['value'],
+                    ];
+                    $sql = "UPDATE 0_stock_buy 
                 SET 0_stock_buy.sb_price = :sb_price,
                 0_stock_buy.sb_last_buy = :sb_last_buy
                 WHERE 0_stock_buy.sb_id = :sb_id";
-                $stmt = $db->prepare($sql);
-                $stmt->execute($sup);
-                if ($stmt->errorCode() == 0) {
-                }
-                else {
-                    return 'false';
+                    $stmt = $db->prepare($sql);
+                    $stmt->execute($sup);
+                    if ($stmt->errorCode() == 0) {
+                    } else {
+                        return 'false';
+                    }
                 }
             }
-
             foreach ($selling_price as $key => $val) {
                 $sell = [
                     'ss_price' => $val[2]['value'],

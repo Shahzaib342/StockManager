@@ -205,7 +205,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">Supplier Price
-<!--                                <span onclick="stock.addNewRow();" class="add-row-in-supplier-tab">add</span>-->
+                             <span onclick="stock.addNewRowInUpdateModel();" class="add-row-in-supplier-tab">+</span>
                             </div>
                             <div class="panel-body">
                                 <table class="display" id="supplier-price-table2" style="width:100%">

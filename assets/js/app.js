@@ -804,6 +804,27 @@ stock.addNewRow = function() {
 
 };
 
+stock.addNewRowInUpdateModel = function() {
+
+    var supplier_table = $('#supplier-price-table2');
+
+    var len = $('#supplier-price-table2 tbody tr').length;
+    var tr  = '<tr class="new-supplier-rows">';
+    tr += '<td></td>';
+    tr += '<td><select class="form-control supplier-names'+ len+'"></select></td>';
+    tr += '<td><input type="number" class="form-control supplier-price'+ len+'"></td>';
+    tr += '<td><input type="date" class="form-control last-bought'+len+'"></td>';
+    tr += '</tr>';
+
+    supplier_table.find('tbody').append(tr);
+    $('.supplier-names'+ len).empty();
+    $.each(stock.supplierNames, function (index, value) {
+        $('.supplier-names'+ len).append('<option value="' + value['su_desc'] + '">' + value['su_desc'] + '</option>');
+    })
+
+};
+
+
 stock .getDataforUpdation = function(id) {
     $.ajax({
         url: "lib/all.php?action=getDataforUpdation",
@@ -869,9 +890,9 @@ stock.appendToUpdateModel = function(details) {
             SellingPriceTable.find('tbody').append(tr);
         }
 
-        if((jQuery.inArray(value.su_id, stock_price) == -1)) {
+        if((jQuery.inArray(value.sb_id, stock_price) == -1)) {
 
-             stock_price.push(value.su_id);
+             stock_price.push(value.sb_id);
 
 
             var len = $('#supplier-price-table2 tbody tr').length;
