@@ -317,6 +317,33 @@ stock.EditStockItem = function () {
 
             else {
                 $('#editStockItem').modal('hide');
+                $('#stock_items').DataTable().destroy();
+                $('#stock_items').DataTable({
+                    "ajax": {
+                        "url": "../lib/all.php?action=getStockItems",
+                        "dataSrc": ""
+                    },
+                    "initComplete": function (settings, json) {
+                        stock.getCostAndSellingPrices();
+                        $("table#stock_items tbody tr td:nth-child(2)").dblclick(function () {
+                            var id = $(this).parent().find('td:nth-child(1)').text();
+                            stock.editId = id;
+                            stock.getDataforUpdation(id);
+                            stock.getStockDetails('edit');
+                            $('#editStockItem').modal('show');
+                        });
+
+                    },
+                    "columns": [
+                        {"data": "si_id"},
+                        {"data": "si_code"},
+                        {"data": "dp_desc"},
+                        {"data": "sd_desc"},
+                        {"data": "gr_desc"},
+                        {"data": "si_desc"}
+                    ]
+                });
+
                 //$('#message2 p').text('Stock details updated succesfully');
                 //$('#message2').modal('show');
             }
@@ -553,18 +580,18 @@ stock.appendPricesDesc = function (prices) {
         tr += '<td><input type="number" class="form-control markup'+index+'" disabled></td>';
         tr += '<td><input type="number" class="form-control rounding'+index+'"></td>';
         tr += '</tr>';
-        $('.price'+ index).attr('keyup','stock.priceUpdated();');
+        $('#selling-price-table .price'+ index).attr('keyup','stock.priceUpdated();');
 
-        $(document).on( 'keyup', '.price'+ index, function(){
+        $(document).on( 'keyup', '#selling-price-table .price'+ index, function(){
             var $this = $(this);
             stock.CalculatePrice($this);
         } );
 
-        $(document).on( 'keyup', '.rounding'+ index, function(){
+        $(document).on( 'keyup', '#selling-price-table .rounding'+ index, function(){
             stock.RoundingFlag = false;
         } );
 
-        $(document).on( 'keyup', '.markup'+ index, function(){
+        $(document).on( 'keyup', '#selling-price-table .markup'+ index, function(){
             var $this = $(this);
             stock.CalculateMarkup($this);
         } );
@@ -919,18 +946,18 @@ stock.appendToUpdateModel = function(details) {
             tr += '<td><input type="number" class="form-control markup' + index + '" disabled value="' + value.ss_markup + '"></td>';
             tr += '<td><input type="number" class="form-control rounding' + index + '" value="' + value.ss_round + '"></td>';
             tr += '</tr>';
-            $('.price' + index).attr('keyup', 'stock.priceUpdated();');
+            $('#editStockItem #selling-price-table2 .price' + index).attr('keyup', 'stock.priceUpdated();');
 //change keydown keyup paste input keypress
-            $(document).on('keyup', '.price' + index, function () {
+            $(document).on('keyup', '#editStockItem #selling-price-table2 .price' + index, function () {
                 var $this = $(this);
                 stock.CalculatePrice2($this);
             });
 
-            $(document).on('keyup', '.rounding' + index, function () {
+            $(document).on('keyup', '#editStockItem #selling-price-table2 .rounding' + index, function () {
                 stock.RoundingFlag = false;
             });
 
-            $(document).on('keyup', '.markup' + index, function () {
+            $(document).on('keyup', '#editStockItem #selling-price-table2 .markup' + index, function () {
                 var $this = $(this);
                 stock.CalculateMarkup2($this);
             });
