@@ -43,8 +43,8 @@
     float: right;
 }
 
-.form-control {
-    width: 75%!important;
+.stock-first-table .form-control, .stock-first-table2 .form-control {
+    width: 65%!important;
     float: right;
 }
 /*@media only screen and (max-width: 990px) {*/
