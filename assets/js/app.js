@@ -924,9 +924,17 @@ stock.appendToUpdateModel = function(details) {
 
     if(details[0].si_auto_markup == '1') {
         setTimeout(function(){
-            $('.auto-markup').trigger('click');
+             if($('#editStockItem .auto-markup').prop('checked') == false)
+                 $('#editStockItem .auto-markup').trigger('click');
         },1000);
 
+    }
+
+    else {
+        setTimeout(function(){
+            if($('#editStockItem .auto-markup').prop('checked') == true)
+                $('#editStockItem .auto-markup').trigger('click');
+        },1000);
     }
 
 
