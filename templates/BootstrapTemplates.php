@@ -11,59 +11,68 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="code">Code</label>
+                                <input type="text" class="form-control smaller-screens" id="code">
                             </div>
                             <div class="form-group">
                                 <label for="desc">Description</label>
+                                <input type="text" class="form-control smaller-screens" id="desc">
                             </div>
                             <div class="form-group">
                                 <label for="department">Department</label>
+                                <select class="form-control smaller-screens" id="department"></select>
                             </div>
                             <div class="form-group">
                                 <label for="sub_dept">Sub dept</label>
+                                <select class="form-control smaller-screens" id="sub_dept"></select>
                             </div>
                             <div class="form-group">
                                 <label for="group">Group</label>
+                                <select class="form-control smaller-screens" id="group"></select>
                             </div>
                             <div class="form-group">
                                 <label for="tax">Tax</label>
+                                <select class="form-control smaller-screens" id="tax"></select>
                             </div>
                             <div class="form-group">
                                 <label for="case-size">Case Size</label>
+                                <input type="number" class="form-control smaller-screens" id="case-size">
                             </div>
                             <div class="form-group">
                                 <label for="bar-code">Cost per Case</label>
+                                <input type="number" class="form-control smaller-screens" id="cost-per-case">
                             </div>
                             <div class="form-group">
                                 <label for="minimum-stock">Cost per Unit</label>
+                                <input type="number" class="form-control smaller-screens" id="cost-per-unit" disabled>
                             </div>
                         </div>
                         <div class="col-md-9">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="code">
+                                <input type="text" class="form-control larger-screens" id="code">
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="desc">
+                                <input type="text" class="form-control larger-screens" id="desc">
                             </div>
                             <div class="form-group">
-                                <select class="form-control" id="department"></select>
+                                <select class="form-control larger-screens" id="department"></select>
                             </div>
                             <div class="form-group">
-                                <select class="form-control" id="sub_dept"></select>
+                                <select class="form-control larger-screens" id="sub_dept"></select>
                             </div>
                             <div class="form-group">
-                                <select class="form-control" id="group"></select>
+                                <select class="form-control larger-screens" id="group"></select>
                             </div>
                             <div class="form-group">
-                                <select class="form-control" id="tax"></select>
+                                <select class="form-control larger-screens" id="tax"></select>
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control" id="case-size">
+                                <input type="number" class="form-control larger-screens" id="case-size">
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control" id="cost-per-case">
+                                <input type="number" class="form-control larger-screens" id="cost-per-case">
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control" id="cost-per-unit" disabled>
+                                <input type="number" class="form-control larger-screens" id="cost-per-unit" disabled>
                             </div>
                         </div>
                     </div>
@@ -146,59 +155,68 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="code">Code</label>
+                                <input type="text" class="form-control smaller-screens" id="code">
                             </div>
                             <div class="form-group">
                                 <label for="desc">Description</label>
+                                <input type="text" class="form-control smaller-screens" id="desc">
                             </div>
                             <div class="form-group">
                                 <label for="department">Department</label>
+                                <select class="form-control smaller-screens" id="department"></select>
                             </div>
                             <div class="form-group">
                                 <label for="sub_dept">Sub dept</label>
+                                <select class="form-control smaller-screens" id="sub_dept"></select>
                             </div>
                             <div class="form-group">
                                 <label for="group">Group</label>
+                                <select class="form-control smaller-screens" id="group"></select>
                             </div>
                             <div class="form-group">
                                 <label for="tax">Tax</label>
+                                <select class="form-control smaller-screens" id="tax"></select>
                             </div>
                             <div class="form-group">
                                 <label for="case-size">Case Size</label>
+                                <input type="number" class="form-control smaller-screens" id="case-size2">
                             </div>
                             <div class="form-group">
                                 <label for="bar-code">Cost per Case</label>
+                                <input type="number" class="form-control smaller-screens" id="cost-per-case2">
                             </div>
                             <div class="form-group">
                                 <label for="minimum-stock">Cost per Unit</label>
+                                <input type="number" class="form-control smaller-screens" id="cost-per-unit2" disabled>
                             </div>
                         </div>
                         <div class="col-md-9">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="code">
+                                <input type="text" class="form-control larger-screens" id="code">
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="desc">
+                                <input type="text" class="form-control larger-screens" id="desc">
                             </div>
                             <div class="form-group">
-                                <select class="form-control" id="department"></select>
+                                <select class="form-control larger-screens" id="department"></select>
                             </div>
                             <div class="form-group">
-                                <select class="form-control" id="sub_dept"></select>
+                                <select class="form-control larger-screens" id="sub_dept"></select>
                             </div>
                             <div class="form-group">
-                                <select class="form-control" id="group"></select>
+                                <select class="form-control larger-screens" id="group"></select>
                             </div>
                             <div class="form-group">
-                                <select class="form-control" id="tax"></select>
+                                <select class="form-control larger-screens" id="tax"></select>
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control" id="case-size2">
+                                <input type="number" class="form-control larger-screens" id="case-size2">
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control" id="cost-per-case2">
+                                <input type="number" class="form-control larger-screens" id="cost-per-case2">
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control" id="cost-per-unit2" disabled>
+                                <input type="number" class="form-control larger-screens" id="cost-per-unit2" disabled>
                             </div>
                         </div>
                     </div>

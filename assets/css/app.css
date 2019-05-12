@@ -42,3 +42,20 @@
     font-size: 22px;
     float: right;
 }
+
+.smaller-screens {
+    display: none!important;
+}
+
+@media only screen and (max-width: 990px) {
+    .smaller-screens {
+        display: block!important;
+    }
+    .larger-screens {
+        display: none!important;
+    }
+    .form-control {
+        width: 75%!important;
+        float: right;
+    }
+}
