@@ -310,7 +310,7 @@ stock.EditStockItem = function () {
         success: function (response) {
 
             if(response.success == false) {
-                $('#editStockItem').modal('hide');
+                //$('#editStockItem').modal('hide');
                 $('#message p').text('Stock details failed to update successfully double check the data');
                 $('#message').modal('show');
             }
@@ -350,7 +350,7 @@ stock.EditStockItem = function () {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR, textStatus, errorThrown);
-            $('#editStockItem').modal('hide');
+            //$('#editStockItem').modal('hide');
             $('#message p').text('Stock details failed to update successfully double check the data');
             $('#message').modal('show');
         }
