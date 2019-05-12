@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6 stock-first-table">
-                        <div class="col-md-3">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="code">Code</label>
                                 <input type="text" class="form-control smaller-screens" id="code">
@@ -46,35 +46,35 @@
                                 <input type="number" class="form-control smaller-screens" id="cost-per-unit" disabled>
                             </div>
                         </div>
-                        <div class="col-md-9">
-                            <div class="form-group">
-                                <input type="text" class="form-control larger-screens" id="code">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control larger-screens" id="desc">
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control larger-screens" id="department"></select>
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control larger-screens" id="sub_dept"></select>
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control larger-screens" id="group"></select>
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control larger-screens" id="tax"></select>
-                            </div>
-                            <div class="form-group">
-                                <input type="number" class="form-control larger-screens" id="case-size">
-                            </div>
-                            <div class="form-group">
-                                <input type="number" class="form-control larger-screens" id="cost-per-case">
-                            </div>
-                            <div class="form-group">
-                                <input type="number" class="form-control larger-screens" id="cost-per-unit" disabled>
-                            </div>
-                        </div>
+<!--                        <div class="col-md-9">-->
+<!--                            <div class="form-group">-->
+<!--                                <input type="text" class="form-control larger-screens" id="code">-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <input type="text" class="form-control larger-screens" id="desc">-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <select class="form-control larger-screens" id="department"></select>-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <select class="form-control larger-screens" id="sub_dept"></select>-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <select class="form-control larger-screens" id="group"></select>-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <select class="form-control larger-screens" id="tax"></select>-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <input type="number" class="form-control larger-screens" id="case-size">-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <input type="number" class="form-control larger-screens" id="cost-per-case">-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <input type="number" class="form-control larger-screens" id="cost-per-unit" disabled>-->
+<!--                            </div>-->
+<!--                        </div>-->
                     </div>
                     <div class="col-md-6">
                         <div class="panel panel-default">
@@ -152,7 +152,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6 stock-first-table">
-                        <div class="col-md-3">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="code">Code</label>
                                 <input type="text" class="form-control smaller-screens" id="code">
@@ -190,35 +190,35 @@
                                 <input type="number" class="form-control smaller-screens" id="cost-per-unit2" disabled>
                             </div>
                         </div>
-                        <div class="col-md-9">
-                            <div class="form-group">
-                                <input type="text" class="form-control larger-screens" id="code">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control larger-screens" id="desc">
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control larger-screens" id="department"></select>
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control larger-screens" id="sub_dept"></select>
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control larger-screens" id="group"></select>
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control larger-screens" id="tax"></select>
-                            </div>
-                            <div class="form-group">
-                                <input type="number" class="form-control larger-screens" id="case-size2">
-                            </div>
-                            <div class="form-group">
-                                <input type="number" class="form-control larger-screens" id="cost-per-case2">
-                            </div>
-                            <div class="form-group">
-                                <input type="number" class="form-control larger-screens" id="cost-per-unit2" disabled>
-                            </div>
-                        </div>
+    <!--                        <div class="col-md-9">-->
+    <!--                            <div class="form-group">-->
+    <!--                                <input type="text" class="form-control larger-screens" id="code">-->
+    <!--                            </div>-->
+    <!--                            <div class="form-group">-->
+    <!--                                <input type="text" class="form-control larger-screens" id="desc">-->
+    <!--                            </div>-->
+    <!--                            <div class="form-group">-->
+    <!--                                <select class="form-control larger-screens" id="department"></select>-->
+    <!--                            </div>-->
+    <!--                            <div class="form-group">-->
+    <!--                                <select class="form-control larger-screens" id="sub_dept"></select>-->
+    <!--                            </div>-->
+    <!--                            <div class="form-group">-->
+    <!--                                <select class="form-control larger-screens" id="group"></select>-->
+    <!--                            </div>-->
+    <!--                            <div class="form-group">-->
+    <!--                                <select class="form-control larger-screens" id="tax"></select>-->
+    <!--                            </div>-->
+    <!--                            <div class="form-group">-->
+    <!--                                <input type="number" class="form-control larger-screens" id="case-size2">-->
+    <!--                            </div>-->
+    <!--                            <div class="form-group">-->
+    <!--                                <input type="number" class="form-control larger-screens" id="cost-per-case2">-->
+    <!--                            </div>-->
+    <!--                            <div class="form-group">-->
+    <!--                                <input type="number" class="form-control larger-screens" id="cost-per-unit2" disabled>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
                     </div>
                     <div class="col-md-6">
                         <div class="panel panel-default">

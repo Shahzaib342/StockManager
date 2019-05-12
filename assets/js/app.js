@@ -7,7 +7,11 @@ var stock = {
     SupplierIds:'',
     PricesIds:'',
     editId:'',
-    RoundingFlag:false
+    RoundingFlag:false,
+    dp_code:'',
+    sd_code:'',
+    gr_code:'',
+    tx_id:''
 };
 
 $(document).ready(function () {
@@ -476,7 +480,13 @@ stock.appendDepartmentDesc = function (departments,param,desc) {
     if(param == 'edit') {
         $('#editStockItem #department').empty();
         $.each(departments, function (index, value) {
-            $('#editStockItem #department').append('<option value="' + value[0] + '">' + value[1] + '</option>');
+            if(value[0] == stock.dp_code) {
+                $('#editStockItem #department').append('<option value="' + value[0] + '" selected>' + value[1] + '</option>');
+            }
+            else {
+                $('#editStockItem #department').append('<option value="' + value[0] + '">' + value[1] + '</option>');
+            }
+
         })
     }
     else {
@@ -491,7 +501,13 @@ stock.appendGroupsDesc = function (groups,param,desc) {
     if(param == 'edit') {
         $('#editStockItem #group').empty();
         $.each(groups, function (index, value) {
-            $('#editStockItem #group').append('<option value="' + value[0] + '">' + value[1] + '</option>');
+            if(value[0] == stock.gr_code) {
+                $('#editStockItem #group').append('<option value="' + value[0] + '" selected>' + value[1] + '</option>');
+            }
+            else {
+                $('#editStockItem #group').append('<option value="' + value[0] + '">' + value[1] + '</option>');
+            }
+
         })
     }
     else {
@@ -507,7 +523,13 @@ stock.appendSubDepartmentDesc = function (Subdepartments,param,desc) {
     if(param == 'edit') {
         $('#editStockItem #sub_dept').empty();
         $.each(Subdepartments, function (index, value) {
-            $('#editStockItem #sub_dept').append('<option value="' + value[0] + '">' + value[1] + '</option>');
+            if(value[0] == stock.sd_code) {
+                $('#editStockItem #sub_dept').append('<option value="' + value[0] + '" selected>' + value[1] + '</option>');
+            }
+            else {
+                $('#editStockItem #sub_dept').append('<option value="' + value[0] + '">' + value[1] + '</option>');
+            }
+
         })
     }
     else {
@@ -580,7 +602,13 @@ stock.appendTaxDesc = function (taxes,param,desc) {
     if(param == 'edit') {
         $('#editStockItem #tax').empty();
         $.each(taxes, function (index, value) {
-            $('#editStockItem #tax').append('<option value="' + value[0] + '">' + value[1] + '</option>');
+            if(value[0] == stock.tx_id) {
+                $('#editStockItem #tax').append('<option value="' + value[0] + '" selected>' + value[1] + '</option>');
+            }
+            else {
+                $('#editStockItem #tax').append('<option value="' + value[0] + '">' + value[1] + '</option>');
+            }
+
         });
     }
     else {
@@ -853,6 +881,10 @@ stock .getDataforUpdation = function(id) {
 stock.appendToUpdateModel = function(details) {
    var supplier_price = [];
    var stock_price = [];
+   stock.dp_code = details[0].dp_code;
+   stock.sd_code = details[0].sd_code;
+   stock.gr_code = details[0].gr_code;
+   stock.tx_id = details[0].tx_id;
    $('#editStockItem #code').val(details[0].si_code);
     $('#editStockItem #desc').val(details[0].si_desc);
     $('#editStockItem #department').val(details[0].dp_code);
