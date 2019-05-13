@@ -660,7 +660,9 @@ stock.CalculateMarkup = function (param) {
     if(Rounding.val() != '') {
         if(stock.RoundingFlag ==false) {
             var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
-            Price.val(price);
+            var parts = Price.val().toString().split('.');
+            Price.val(parts[0] + Rounding.val());
+            //Price.val(price);
             stock.RoundingFlag = true;
         }
 
@@ -683,7 +685,9 @@ stock.reCalculateMarkup = function() {
         if (Rounding.val() != '') {
             if (stock.RoundingFlag == false) {
                 var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
-                Price.val(price);
+                var parts = Price.val().toString().split('.');
+                Price.val(parts[0] + Rounding.val());
+                //Price.val(price);
                 stock.RoundingFlag = true;
             }
 
@@ -707,7 +711,9 @@ stock.CalculateMarkup2 = function (param) {
     if(Rounding.val() != '') {
         if(stock.RoundingFlag ==false) {
             var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
-            Price.val(price);
+            var parts = Price.val().toString().split('.');
+            Price.val(parts[0] + Rounding.val());
+            //Price.val(price);
             stock.RoundingFlag = true;
         }
 
@@ -731,7 +737,9 @@ stock.reCalculateMarkup2 = function() {
         if (Rounding.val() != '') {
             if (stock.RoundingFlag == false) {
                 var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
-                Price.val(price);
+                var parts = Price.val().toString().split('.');
+                Price.val(parts[0] + Rounding.val());
+                //Price.val(price);
                 stock.RoundingFlag = true;
             }
 
@@ -755,7 +763,9 @@ stock.CalculatePrice = function (param) {
     if(Rounding.val() != '') {
         if(stock.RoundingFlag ==false) {
             var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
-            Price.val(price);
+            var parts = Price.val().toString().split('.');
+            Price.val(parts[0] + Rounding.val());
+            //Price.val(price);
             stock.RoundingFlag = true;
         }
 
@@ -786,7 +796,9 @@ stock.reCalculatePrice = function() {
         if(Rounding.val() != '') {
             if(stock.RoundingFlag ==false) {
                 var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
-                Price.val(price);
+                var parts = Price.val().toString().split('.');
+                Price.val(parts[0] + Rounding.val());
+                //Price.val(price);
                 stock.RoundingFlag = true;
             }
 
@@ -816,7 +828,8 @@ stock.CalculatePrice2 = function (param) {
     if(Rounding.val() != '') {
         if(stock.RoundingFlag ==false) {
             var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
-            Price.val(price);
+            var parts = Price.val().toString().split('.');
+            Price.val(parts[0] + Rounding.val());
             stock.RoundingFlag = true;
         }
 
@@ -839,7 +852,9 @@ stock.reCalculatePrice2 = function() {
         if (Rounding.val() != '') {
             if (stock.RoundingFlag == false) {
                 var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
-                Price.val(price);
+                var parts = Price.val().toString().split('.');
+                Price.val(parts[0] + Rounding.val());
+                //Price.val(price);
                 stock.RoundingFlag = true;
             }
 
