@@ -657,18 +657,32 @@ stock.CalculateMarkup = function (param) {
     var TotalPrice =  parseFloat(CostPerUnit.val()) + TenPercentofCostPerUnit;
     Price.val(TotalPrice);
 
-    if(Rounding.val() != '') {
+    if(Rounding.val() != '' || Rounding.val() == '0' ) {
         if(stock.RoundingFlag ==false) {
             var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
+            if(Price.val() % 1 != 0) {
+                var parts = Price.val().toString().split('.');
+                if(Rounding.val() != '0')
+                    Price.val(parts[0] + Rounding.val());
+                var parts = Price.val().toString().split('.');
+                Rounding.val('.' + parts[1]);
+                stock.RoundingFlag = true;
+            }
+        }
+
+        else {
             var parts = Price.val().toString().split('.');
-            Price.val(parts[0] + Rounding.val());
-            //Price.val(price);
-            stock.RoundingFlag = true;
+            Rounding.val('.' + parts[1]);
         }
 
     }
-    var parts = Price.val().toString().split('.');
-    Rounding.val('.' + parts[1]);
+    else {
+        var parts = Price.val().toString().split('.');
+        if(parts[1])
+            Rounding.val('.' + parts[1]);
+        else
+            Rounding.val(.00);
+    }
 };
 
 stock.reCalculateMarkup = function() {
@@ -682,18 +696,32 @@ stock.reCalculateMarkup = function() {
         var TotalPrice =  parseFloat(CostPerUnit.val()) + TenPercentofCostPerUnit;
         Price.val(TotalPrice);
 
-        if (Rounding.val() != '') {
-            if (stock.RoundingFlag == false) {
+        if(Rounding.val() != '' || Rounding.val() == '0' ) {
+            if(stock.RoundingFlag ==false) {
                 var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
+                if(Price.val() % 1 != 0) {
+                    var parts = Price.val().toString().split('.');
+                    if(Rounding.val() != '0')
+                        Price.val(parts[0] + Rounding.val());
+                    var parts = Price.val().toString().split('.');
+                    Rounding.val('.' + parts[1]);
+                    stock.RoundingFlag = true;
+                }
+            }
+
+            else {
                 var parts = Price.val().toString().split('.');
-                Price.val(parts[0] + Rounding.val());
-                //Price.val(price);
-                stock.RoundingFlag = true;
+                Rounding.val('.' + parts[1]);
             }
 
         }
-        var parts = Price.val().toString().split('.');
-        Rounding.val('.' + parts[1]);
+        else {
+            var parts = Price.val().toString().split('.');
+            if(parts[1])
+                Rounding.val('.' + parts[1]);
+            else
+                Rounding.val(.00);
+        }
     });
 };
 
@@ -708,18 +736,32 @@ stock.CalculateMarkup2 = function (param) {
     var TotalPrice =  parseFloat(CostPerUnit.val()) + TenPercentofCostPerUnit;
     Price.val(TotalPrice);
 
-    if(Rounding.val() != '') {
+    if(Rounding.val() != '' || Rounding.val() == '0' ) {
         if(stock.RoundingFlag ==false) {
             var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
+            if(Price.val() % 1 != 0) {
+                var parts = Price.val().toString().split('.');
+                if(Rounding.val() != '0')
+                    Price.val(parts[0] + Rounding.val());
+                var parts = Price.val().toString().split('.');
+                Rounding.val('.' + parts[1]);
+                stock.RoundingFlag = true;
+            }
+        }
+
+        else {
             var parts = Price.val().toString().split('.');
-            Price.val(parts[0] + Rounding.val());
-            //Price.val(price);
-            stock.RoundingFlag = true;
+            Rounding.val('.' + parts[1]);
         }
 
     }
-    var parts = Price.val().toString().split('.');
-    Rounding.val('.' + parts[1]);
+    else {
+        var parts = Price.val().toString().split('.');
+        if(parts[1])
+            Rounding.val('.' + parts[1]);
+        else
+            Rounding.val(.00);
+    }
 
 };
 
@@ -733,19 +775,32 @@ stock.reCalculateMarkup2 = function() {
         var TenPercentofCostPerUnit = ((parseFloat(Markup.val()) * parseFloat(CostPerUnit.val())) / 100);
         var TotalPrice =  parseFloat(CostPerUnit.val()) + TenPercentofCostPerUnit;
         Price.val(TotalPrice);
-
-        if (Rounding.val() != '') {
-            if (stock.RoundingFlag == false) {
+        if(Rounding.val() != '' || Rounding.val() == '0' ) {
+            if(stock.RoundingFlag ==false) {
                 var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
+                if(Price.val() % 1 != 0) {
+                    var parts = Price.val().toString().split('.');
+                    if(Rounding.val() != '0')
+                        Price.val(parts[0] + Rounding.val());
+                    var parts = Price.val().toString().split('.');
+                    Rounding.val('.' + parts[1]);
+                    stock.RoundingFlag = true;
+                }
+            }
+
+            else {
                 var parts = Price.val().toString().split('.');
-                Price.val(parts[0] + Rounding.val());
-                //Price.val(price);
-                stock.RoundingFlag = true;
+                Rounding.val('.' + parts[1]);
             }
 
         }
-        var parts = Price.val().toString().split('.');
-        Rounding.val('.' + parts[1]);
+        else {
+            var parts = Price.val().toString().split('.');
+            if(parts[1])
+                Rounding.val('.' + parts[1]);
+            else
+                Rounding.val(.00);
+        }
     });
 };
 
@@ -760,22 +815,33 @@ stock.CalculatePrice = function (param) {
     Markup.val(TenPercentofMarkup);
 
 
-    if(Rounding.val() != '') {
+    if(Rounding.val() != '' || Rounding.val() == '0' ) {
         if(stock.RoundingFlag ==false) {
             var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
-            var parts = Price.val().toString().split('.');
-            Price.val(parts[0] + Rounding.val());
-            //Price.val(price);
-            stock.RoundingFlag = true;
+            if(Price.val() % 1 != 0) {
+                var parts = Price.val().toString().split('.');
+                if(Rounding.val() != '0')
+                Price.val(parts[0] + Rounding.val());
+                var parts = Price.val().toString().split('.');
+                Rounding.val('.' + parts[1]);
+                stock.RoundingFlag = true;
+            }
         }
 
         else {
-
+            var parts = Price.val().toString().split('.');
+            Rounding.val('.' + parts[1]);
         }
 
     }
-    var parts = Price.val().toString().split('.');
-    Rounding.val('.' + parts[1]);
+    else {
+        var parts = Price.val().toString().split('.');
+        if(parts[1])
+           Rounding.val('.' + parts[1]);
+        else
+            Rounding.val(.00);
+    }
+
 
 };
 
@@ -793,22 +859,32 @@ stock.reCalculatePrice = function() {
         Markup.val(TenPercentofMarkup);
 
 
-        if(Rounding.val() != '') {
+        if(Rounding.val() != '' || Rounding.val() == '0' ) {
             if(stock.RoundingFlag ==false) {
                 var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
-                var parts = Price.val().toString().split('.');
-                Price.val(parts[0] + Rounding.val());
-                //Price.val(price);
-                stock.RoundingFlag = true;
+                if(Price.val() % 1 != 0) {
+                    var parts = Price.val().toString().split('.');
+                    if(Rounding.val() != '0')
+                        Price.val(parts[0] + Rounding.val());
+                    var parts = Price.val().toString().split('.');
+                    Rounding.val('.' + parts[1]);
+                    stock.RoundingFlag = true;
+                }
             }
 
             else {
-
+                var parts = Price.val().toString().split('.');
+                Rounding.val('.' + parts[1]);
             }
 
         }
-        var parts = Price.val().toString().split('.');
-        Rounding.val('.' + parts[1]);
+        else {
+            var parts = Price.val().toString().split('.');
+            if(parts[1])
+                Rounding.val('.' + parts[1]);
+            else
+                Rounding.val(.00);
+        }
     });
 
 
@@ -825,17 +901,32 @@ stock.CalculatePrice2 = function (param) {
     var TenPercentofMarkup = (parseFloat(TenPercent) * 100) / parseFloat(CostPerUnit.val());
     Markup.val(TenPercentofMarkup);
 
-    if(Rounding.val() != '') {
+    if(Rounding.val() != '' || Rounding.val() == '0' ) {
         if(stock.RoundingFlag ==false) {
             var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
+            if(Price.val() % 1 != 0) {
+                var parts = Price.val().toString().split('.');
+                if(Rounding.val() != '0')
+                    Price.val(parts[0] + Rounding.val());
+                var parts = Price.val().toString().split('.');
+                Rounding.val('.' + parts[1]);
+                stock.RoundingFlag = true;
+            }
+        }
+
+        else {
             var parts = Price.val().toString().split('.');
-            Price.val(parts[0] + Rounding.val());
-            stock.RoundingFlag = true;
+            Rounding.val('.' + parts[1]);
         }
 
     }
-    var parts = Price.val().toString().split('.');
-    Rounding.val('.' + parts[1]);
+    else {
+        var parts = Price.val().toString().split('.');
+        if(parts[1])
+            Rounding.val('.' + parts[1]);
+        else
+            Rounding.val(.00);
+    }
 };
 
 stock.reCalculatePrice2 = function() {
@@ -849,18 +940,32 @@ stock.reCalculatePrice2 = function() {
         var TenPercentofMarkup = (parseFloat(TenPercent) * 100) / parseFloat(CostPerUnit.val());
         Markup.val(TenPercentofMarkup);
 
-        if (Rounding.val() != '') {
-            if (stock.RoundingFlag == false) {
+        if(Rounding.val() != '' || Rounding.val() == '0' ) {
+            if(stock.RoundingFlag ==false) {
                 var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
+                if(Price.val() % 1 != 0) {
+                    var parts = Price.val().toString().split('.');
+                    if(Rounding.val() != '0')
+                        Price.val(parts[0] + Rounding.val());
+                    var parts = Price.val().toString().split('.');
+                    Rounding.val('.' + parts[1]);
+                    stock.RoundingFlag = true;
+                }
+            }
+
+            else {
                 var parts = Price.val().toString().split('.');
-                Price.val(parts[0] + Rounding.val());
-                //Price.val(price);
-                stock.RoundingFlag = true;
+                Rounding.val('.' + parts[1]);
             }
 
         }
-        var parts = Price.val().toString().split('.');
-        Rounding.val('.' + parts[1]);
+        else {
+            var parts = Price.val().toString().split('.');
+            if(parts[1])
+                Rounding.val('.' + parts[1]);
+            else
+                Rounding.val(.00);
+        }
     });
 };
 
@@ -974,6 +1079,7 @@ stock.appendToUpdateModel = function(details) {
             $(document).on('keyup', '#editStockItem #selling-price-table2 .price' + index, function () {
                 var $this = $(this);
                 stock.CalculatePrice2($this);
+
             });
 
             $(document).on('keyup', '#editStockItem #selling-price-table2 .rounding' + index, function () {
