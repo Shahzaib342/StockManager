@@ -23,7 +23,7 @@ class StockItemsClass
 
     function getFilteredStock($data)
     {
-        $query = DB::connectMe()->query("SELECT si.si_code,si.si_desc,ld.dp_desc,lg.gr_desc,ls.sd_desc FROM 0_stock_items si INNER JOIN
+        $query = DB::connectMe()->query("SELECT si.si_id,si.si_code,si.si_desc,ld.dp_desc,lg.gr_desc,ls.sd_desc FROM 0_stock_items si INNER JOIN
                                                   0_list_dept ld on si.dp_code=ld.dp_code and ld.dp_desc = '$data' INNER JOIN 0_list_grup lg on lg.gr_code=si.gr_code INNER JOIN 
                                                   0_list_subd ls on ls.sd_code=si.sd_code");
         $users = $row = $query->fetchAll();
