@@ -664,23 +664,18 @@ stock.CalculateMarkup = function (param) {
             var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
             if(Price.val() % 1 != 0) {
                 var parts = Price.val().toString().split('.');
+                var rounding_parts = Rounding.val().toString().split('.');
                 if(Rounding.val() != '0')
-                    Price.val(parts[0] + Rounding.val());
-                var parts = Price.val().toString().split('.');
-               // Rounding.val('.' + parts[1]);
+                    Price.val(parts[0] + '.' + rounding_parts[1]);
                 stock.RoundingFlag = true;
             }
         }
 
         else {
-            //if (Price.val() % 1 != 0) {
-                var parts = Price.val().toString().split('.');
-                if (Rounding.val() != '0')
-                    Price.val(parts[0] + Rounding.val());
-                var parts = Price.val().toString().split('.');
-                // var parts = Price.val().toString().split('.');
-                // Rounding.val('.' + parts[1]);
-            //}
+            var parts = Price.val().toString().split('.');
+            var rounding_parts = Rounding.val().toString().split('.');
+            if(Rounding.val() != '0')
+                Price.val(parts[0] + '.' + rounding_parts[1]);
         }
 
     }
@@ -709,19 +704,18 @@ stock.reCalculateMarkup = function() {
                 var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
                 if(Price.val() % 1 != 0) {
                     var parts = Price.val().toString().split('.');
+                    var rounding_parts = Rounding.val().toString().split('.');
                     if(Rounding.val() != '0')
-                        Price.val(parts[0] + Rounding.val());
-                    var parts = Price.val().toString().split('.');
-                    //Rounding.val('.' + parts[1]);
+                        Price.val(parts[0] + '.' + rounding_parts[1]);
                     stock.RoundingFlag = true;
                 }
             }
 
             else {
                 var parts = Price.val().toString().split('.');
-                if (Rounding.val() != '0')
-                    Price.val(parts[0] + Rounding.val());
-                var parts = Price.val().toString().split('.');
+                var rounding_parts = Rounding.val().toString().split('.');
+                if(Rounding.val() != '0')
+                    Price.val(parts[0] + '.' + rounding_parts[1]);
             }
 
         }
@@ -751,19 +745,19 @@ stock.CalculateMarkup2 = function (param) {
             var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
             if(Price.val() % 1 != 0) {
                 var parts = Price.val().toString().split('.');
+                var rounding_parts = Rounding.val().toString().split('.');
                 if(Rounding.val() != '0')
-                    Price.val(parts[0] + Rounding.val());
-                var parts = Price.val().toString().split('.');
-               // Rounding.val('.' + parts[1]);
+                    Price.val(parts[0] + '.' + rounding_parts[1]);
+
                 stock.RoundingFlag = true;
             }
         }
 
         else {
             var parts = Price.val().toString().split('.');
-            if (Rounding.val() != '0')
-                Price.val(parts[0] + Rounding.val());
-            var parts = Price.val().toString().split('.');
+            var rounding_parts = Rounding.val().toString().split('.');
+            if(Rounding.val() != '0')
+                Price.val(parts[0] + '.' + rounding_parts[1]);
         }
 
     }
@@ -792,19 +786,18 @@ stock.reCalculateMarkup2 = function() {
                 var price = (parseFloat(Price.val()) + parseFloat(Rounding.val()));
                 if(Price.val() % 1 != 0) {
                     var parts = Price.val().toString().split('.');
+                    var rounding_parts = Rounding.val().toString().split('.');
                     if(Rounding.val() != '0')
-                        Price.val(parts[0] + Rounding.val());
-                    var parts = Price.val().toString().split('.');
-                   // Rounding.val('.' + parts[1]);
+                        Price.val(parts[0] + '.' + rounding_parts[1]);
                     stock.RoundingFlag = true;
                 }
             }
 
             else {
                 var parts = Price.val().toString().split('.');
-                if (Rounding.val() != '0')
-                    Price.val(parts[0] + Rounding.val());
-                var parts = Price.val().toString().split('.');
+                var rounding_parts = Rounding.val().toString().split('.');
+                if(Rounding.val() != '0')
+                    Price.val(parts[0] + '.' + rounding_parts[1]);
             }
 
         }
@@ -832,8 +825,9 @@ stock.replaceRounding = function (param) {
     if(Rounding.val() != '' || Rounding.val() == '0' ) {
 
         var parts = Price.val().toString().split('.');
-        if (Rounding.val() != '0')
-            Price.val(parts[0] + Rounding.val());
+        var rounding_parts = Rounding.val().toString().split('.');
+        if(Rounding.val() != '0')
+            Price.val(parts[0] + '.' + rounding_parts[1]);
 
         if(Price.val() % 1 == 0) {
             Price.val(Price.val() + Rounding.val());
@@ -856,8 +850,9 @@ stock.replaceRounding2 = function (param) {
     if(Rounding.val() != '' || Rounding.val() == '0' ) {
 
         var parts = Price.val().toString().split('.');
-        if (Rounding.val() != '0')
-            Price.val(parts[0] + Rounding.val());
+        var rounding_parts = Rounding.val().toString().split('.');
+        if(Rounding.val() != '0')
+            Price.val(parts[0] + '.' + rounding_parts[1]);
 
         if(Price.val() % 1 == 0) {
             Price.val(Price.val() + Rounding.val());
@@ -884,7 +879,10 @@ stock.CalculatePrice = function (param,e) {
             //if(Price.val() % 1 != 0) {
                    console.log(e);
                 if(Rounding.val() != '0' && e!=8) {
-                    Price.val(parts[0] + Rounding.val());
+
+                    var rounding_parts = Rounding.val().toString().split('.');
+                        Price.val(parts[0] + '.' + rounding_parts[1]);
+
                     var parts = Price.val().toString().split('.');
                     Rounding.val('.' + parts[1]);
                     stock.RoundingFlag = true;
@@ -936,7 +934,12 @@ stock.reCalculatePrice = function(e) {
                 //if(Price.val() % 1 != 0) {
                 console.log(e);
                 if(Rounding.val() != '0' && e!=8) {
-                    Price.val(parts[0] + Rounding.val());
+
+
+                    var rounding_parts = Rounding.val().toString().split('.');
+
+                        Price.val(parts[0] + '.' + rounding_parts[1]);
+
                     var parts = Price.val().toString().split('.');
                     Rounding.val('.' + parts[1]);
                     stock.RoundingFlag = true;
@@ -986,7 +989,11 @@ stock.CalculatePrice2 = function (param,e) {
             //if(Price.val() % 1 != 0) {
             console.log(e);
             if(Rounding.val() != '0' && e!=8) {
-                Price.val(parts[0] + Rounding.val());
+
+                var rounding_parts = Rounding.val().toString().split('.');
+                    Price.val(parts[0] + '.' + rounding_parts[1]);
+
+
                 var parts = Price.val().toString().split('.');
                 Rounding.val('.' + parts[1]);
                 stock.RoundingFlag = true;
@@ -1032,7 +1039,11 @@ stock.reCalculatePrice2 = function(e) {
                 //if(Price.val() % 1 != 0) {
                 console.log(e);
                 if(Rounding.val() != '0' && e!=8) {
-                    Price.val(parts[0] + Rounding.val());
+
+                    var rounding_parts = Rounding.val().toString().split('.');
+                        Price.val(parts[0] + '.' + rounding_parts[1]);
+
+
                     var parts = Price.val().toString().split('.');
                     Rounding.val('.' + parts[1]);
                     stock.RoundingFlag = true;
@@ -1137,16 +1148,35 @@ stock.appendToUpdateModel = function(details) {
 
     if(details[0].si_auto_markup == '1') {
         setTimeout(function(){
-             if($('#editStockItem .auto-markup').prop('checked') == false)
+             if($('#editStockItem .auto-markup').prop('checked') == false) {
                  $('#editStockItem .auto-markup').trigger('click');
+             }
+             else {
+                 $('#selling-price-table2 tbody tr td:nth-child(3)').each(function (index, value) {
+                     $(this).find('input').prop('disabled', true);
+                 });
+                 $('#selling-price-table2 tbody tr td:nth-child(4)').each(function (index, value) {
+                     $(this).find('input').prop('disabled', false);
+                 });
+             }
         },1000);
 
     }
 
     else {
         setTimeout(function(){
-            if($('#editStockItem .auto-markup').prop('checked') == true)
+            console.log('0');
+            if($('#editStockItem .auto-markup').prop('checked') == true) {
                 $('#editStockItem .auto-markup').trigger('click');
+            }
+            else {
+                $('#selling-price-table2 tbody tr td:nth-child(4)').each(function (index, value) {
+                    $(this).find('input').prop('disabled', true);
+                });
+                $('#selling-price-table2 tbody tr td:nth-child(3)').each(function (index, value) {
+                    $(this).find('input').prop('disabled', false);
+                });
+            }
         },1000);
     }
 
